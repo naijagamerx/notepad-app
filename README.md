@@ -2,83 +2,64 @@
 
 A beautiful and functional web-based note-taking application built with vanilla JavaScript, HTML5, and CSS3. NotePad provides an intuitive and responsive interface for managing your notes, with features like rich text editing, note sharing, and tagging.
 
-![Main Interface](documentation/assets/images/features/main-index-interface-with%20example.png)
+## 📝 Main Interface
+![Main Interface](https://raw.githubusercontent.com/naijagamerx/notepad-app/main/documentation/assets/images/features/main-index-interface-with%20example.png)
 
 ## ✨ Key Features
 
-### 📝 Rich Text Editing
-Powerful text editing capabilities with an intuitive interface.
-
-![Rich Text Editor](documentation/assets/images/features/rich-text-editing.png)
-
+### Note Management & Text Editing
+- Create and edit notes with rich text formatting
 - Format text (bold, italic, underline)
 - Multiple heading levels
 - Lists and checkboxes
 - Code blocks
 - Quote blocks
 - Image insertion
+- Organize notes with folders and tags
 - Real-time autosave
+- File attachments support
+- Markdown compatibility
 
-### 📁 Advanced Note Management
-Comprehensive tools for organizing your notes efficiently.
-
-![Folder Management](documentation/assets/images/features/folder-management.png)
-
-- Create unlimited folders
-- Drag and drop notes
-- Rename and delete folders
-- Note count per folder
-- Export folder contents
-- Bulk operations
-
-### 🔍 Smart Search & Tags
-Find and organize your notes instantly with our powerful search and tagging system.
-
-![Search Feature](documentation/assets/images/features/search-feature.png)
-![Tag Management](documentation/assets/images/features/manage-tags-view.png)
-
-- Real-time search results
-- Search in titles and content
-- Tag-based filtering
-- Tag management interface
-- Multiple tag support
+### 🏷️ Tag System
+![Tag Management](https://raw.githubusercontent.com/naijagamerx/notepad-app/main/documentation/assets/images/features/manage-tags-view.png)
+- Add and manage tags
+- Filter notes by tags
 - Tag suggestions
+- Bulk tag operations
 
-### 🔗 Advanced Sharing
-Share your notes easily with multiple options.
-
-![Share Interface](documentation/assets/images/features/share-view.png)
-![Link Sharing](documentation/assets/images/features/Link-view.png)
-
+### 🔗 Share Notes
+![Share Interface](https://raw.githubusercontent.com/naijagamerx/notepad-app/main/documentation/assets/images/features/share-view.png)
 - Generate shareable links
-- Social media sharing
-- Email integration
-- Link management
-- Share history
-- Access control
+- Multiple sharing options
+- Preview before sharing
+- Access control settings
 
-### 🗑️ Safe Delete Operations
-Secure note deletion with confirmation.
+### 🔄 Link Management
+![Link Management](https://raw.githubusercontent.com/naijagamerx/notepad-app/main/documentation/assets/images/features/Link-view.png)
+- Manage shared links
+- Set link expiration
+- Track link usage
+- Revoke access anytime
 
-![Delete Operation](documentation/assets/images/features/delete-view.png)
-
+### 🗑️ Safe Delete
+![Delete Operation](https://raw.githubusercontent.com/naijagamerx/notepad-app/main/documentation/assets/images/features/delete-view.png)
 - Confirmation dialogs
 - Batch delete support
 - Recover deleted notes
 - Permanent deletion option
 
-### 📱 Mobile Experience
-Fully optimized for mobile devices with special features.
+## 🔒 Security
+- End-to-end encryption
+- Secure note sharing
+- Private notes protection
+- Regular security updates
 
-![Mobile Interface](documentation/assets/images/features/mobile-advanced-view.png)
-![Mobile Notes](documentation/assets/images/features/mobile-all-notes.png)
-
-- Responsive layout
-- Touch-friendly interface
-- Floating action buttons
-- Mobile-specific optimizations
-- Gesture support
-- Offline access
+## 💻 Technical Details
+- Built with vanilla JavaScript
+- Modern CSS3 features
+- Responsive design
+- PWA support
+- Offline capability
 
 ## 🚀 Quick Start
 
