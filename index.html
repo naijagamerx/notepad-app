@@ -856,6 +856,82 @@
                                         boxShadow: '0 5px 15px rgba(0, 0, 0, 0.3)'
                                     });
                                 }
+                                
+                                // Make sure the create folder button works
+                                const createFolderBtn = document.getElementById('createFolderBtn');
+                                if (createFolderBtn) {
+                                    createFolderBtn.addEventListener('click', function() {
+                                        const folderNameInput = document.getElementById('folderName');
+                                        if (folderNameInput && folderNameInput.value.trim()) {
+                                            console.log('Creating folder:', folderNameInput.value.trim());
+                                            
+                                            // Create folder in DOM
+                                            const foldersList = document.getElementById('foldersList');
+                                            if (foldersList) {
+                                                const newFolder = document.createElement('div');
+                                                newFolder.className = 'folder-item';
+                                                newFolder.dataset.folderId = 'folder_' + Date.now();
+                                                newFolder.innerHTML = `
+                                                    <i class="fas fa-folder"></i>
+                                                    <span class="folder-name">${folderNameInput.value.trim()}</span>
+                                                    <span class="folder-count">0</span>
+                                                    <div class="folder-actions">
+                                                        <i class="fas fa-ellipsis-v"></i>
+                                                    </div>
+                                                `;
+                                                foldersList.appendChild(newFolder);
+                                                
+                                                // Style the new folder
+                                                Object.assign(newFolder.style, {
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    padding: '10px 15px',
+                                                    borderRadius: '8px',
+                                                    marginBottom: '5px',
+                                                    backgroundColor: '#f0f0f0',
+                                                    cursor: 'pointer'
+                                                });
+                                                
+                                                // Save folder to localStorage if available
+                                                try {
+                                                    if (window.localStorage) {
+                                                        // Get existing folders or create empty array
+                                                        const folders = JSON.parse(localStorage.getItem('folders') || '[]');
+                                                        
+                                                        // Add new folder
+                                                        folders.push({
+                                                            id: newFolder.dataset.folderId,
+                                                            name: folderNameInput.value.trim(),
+                                                            notes: []
+                                                        });
+                                                        
+                                                        // Save back to localStorage
+                                                        localStorage.setItem('folders', JSON.stringify(folders));
+                                                        console.log('Folder saved to localStorage');
+                                                    }
+                                                } catch (err) {
+                                                    console.error('Error saving folder to localStorage:', err);
+                                                }
+                                            }
+                                            
+                                            // Close the modal
+                                            folderModal.style.display = 'none';
+                                            
+                                            // Clear the input field
+                                            folderNameInput.value = '';
+                                        } else {
+                                            // Highlight the input field if it's empty
+                                            if (folderNameInput) {
+                                                folderNameInput.style.borderColor = 'red';
+                                                folderNameInput.placeholder = 'Please enter a folder name';
+                                                setTimeout(() => {
+                                                    folderNameInput.style.borderColor = '';
+                                                    folderNameInput.placeholder = 'Enter folder name';
+                                                }, 3000);
+                                            }
+                                        }
+                                    });
+                                }
                             }
                         });
                     }
