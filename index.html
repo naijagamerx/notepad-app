@@ -25,7 +25,8 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/fileOperations.css">
     <link rel="stylesheet" href="css/mobile.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    
     <title>NotePad - Modern Note Taking App</title>
     <style>
         /* Critical mobile fixes that need to be inline to take precedence */
@@ -47,6 +48,62 @@
             
             .sidebar.collapsed {
                 transform: translateX(-100%) !important;
+            }
+            
+            /* Hide PC-only toolbar on mobile */
+            .format-toolbar.pc-only {
+                display: none !important;
+            }
+            
+            /* Share and tag buttons styles fix */
+            #shareNoteBtn, #tagNoteBtn {
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                background-color: #007AFF !important;
+                color: white !important;
+                border-radius: 8px !important;
+                padding: 8px 12px !important;
+                margin-right: 8px !important;
+                border: none !important;
+                cursor: pointer !important;
+            }
+            
+            #shareNoteBtn i, #tagNoteBtn i {
+                color: white !important;
+                margin-right: 0 !important;
+            }
+        }
+        
+        /* Desktop-specific fixes */
+        @media (min-width: 769px) {
+            /* Hide mobile formatting toolbar on desktop */
+            details.mobile-only {
+                display: none !important;
+            }
+            
+            /* Share and tag buttons styles fix for desktop */
+            #shareNoteBtn, #tagNoteBtn {
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                background-color: #f0f0f0 !important;
+                color: #007AFF !important;
+                border-radius: 8px !important;
+                padding: 8px 12px !important;
+                margin-right: 8px !important;
+                border: none !important;
+                cursor: pointer !important;
+            }
+            
+            #shareNoteBtn i, #tagNoteBtn i {
+                color: #007AFF !important;
+                margin-right: 0 !important;
+            }
+            
+            /* Fix icon visibility */
+            .fa, .fas, .far, .fab {
+                display: inline-block !important;
             }
         }
     </style>
@@ -305,16 +362,116 @@
         </button>
     </div>
 
+    <!-- Notification area -->
+    <div id="notificationArea"></div>
+    
+    <!-- Mobile floating action buttons container -->
+    <div class="mobile-floating-actions">
+        <button class="floating-action-btn share-btn" id="mobileShareBtn">
+            <i class="fas fa-share-alt"></i>
+        </button>
+        <button class="floating-action-btn tag-btn" id="mobileTagBtn">
+            <i class="fas fa-tags"></i>
+        </button>
+    </div>
+
+    <!-- Scripts -->
     <script src="js/noteOperations.js"></script>
     <script src="js/fileOperations.js"></script>
-    <script src="js/mobileApp.js"></script>
     <script src="script.js"></script>
-    <script src="folders.js"></script>
+    <script src="js/mobileApp.js"></script>
     <script>
-        // Register service worker for PWA functionality
+        // Verify resources loaded correctly
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check for FontAwesome
+            const fontAwesomeLoaded = (function() {
+                const span = document.createElement('span');
+                span.className = 'fa';
+                span.style.display = 'none';
+                document.body.insertBefore(span, document.body.firstChild);
+                const result = window.getComputedStyle(span, null).fontFamily.includes('FontAwesome');
+                document.body.removeChild(span);
+                return result;
+            })();
+            
+            if (!fontAwesomeLoaded) {
+                console.error('FontAwesome not loaded correctly');
+                // Attempt to reload FontAwesome
+                const link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
+                link.integrity = 'sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==';
+                link.crossOrigin = 'anonymous';
+                link.referrerPolicy = 'no-referrer';
+                document.head.appendChild(link);
+            }
+            
+            // Check for required JavaScript files
+            const requiredScripts = ['noteOperations.js', 'fileOperations.js', 'script.js', 'mobileApp.js'];
+            const loadedScripts = Array.from(document.scripts).map(script => {
+                const src = script.src;
+                return src.substring(src.lastIndexOf('/') + 1);
+            });
+            
+            requiredScripts.forEach(script => {
+                if (!loadedScripts.some(s => s.includes(script))) {
+                    console.error(`Required script ${script} not loaded correctly`);
+                    // Attempt to reload the script
+                    const scriptEl = document.createElement('script');
+                    if (script === 'script.js') {
+                        scriptEl.src = script;
+                    } else {
+                        scriptEl.src = `js/${script}`;
+                    }
+                    document.body.appendChild(scriptEl);
+                }
+            });
+            
+            // Check if NotesApp initialized correctly
+            setTimeout(function() {
+                if (!window.notesApp) {
+                    console.error('NotesApp not initialized correctly');
+                    // Attempt to initialize manually
+                    try {
+                        window.notesApp = new NotesApp();
+                    } catch (e) {
+                        console.error('Failed to initialize NotesApp:', e);
+                    }
+                }
+                
+                // Force fix for share and tag buttons
+                const fixShareAndTagButtons = function() {
+                    const shareBtn = document.getElementById('shareNoteBtn');
+                    const tagBtn = document.getElementById('tagNoteBtn');
+                    
+                    if (shareBtn) {
+                        shareBtn.style.display = 'inline-flex';
+                        shareBtn.style.alignItems = 'center';
+                        
+                        const icon = shareBtn.querySelector('i');
+                        if (icon) icon.style.display = 'inline-block';
+                    }
+                    
+                    if (tagBtn) {
+                        tagBtn.style.display = 'inline-flex';
+                        tagBtn.style.alignItems = 'center';
+                        
+                        const icon = tagBtn.querySelector('i');
+                        if (icon) icon.style.display = 'inline-block';
+                    }
+                };
+                
+                fixShareAndTagButtons();
+                // Run the fix again after a delay to make sure it applies
+                setTimeout(fixShareAndTagButtons, 1000);
+            }, 500);
+        });
+    </script>
+    <script>
+        // Register service worker for PWA
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./service-worker.js')
+                navigator.serviceWorker.register('service-worker.js')
                     .then(registration => {
                         console.log('Service Worker registered with scope:', registration.scope);
                     })
@@ -323,18 +480,6 @@
                     });
             });
         }
-        
-        // Fix for title header on mobile
-        document.addEventListener('DOMContentLoaded', function() {
-            const sidebarTitle = document.getElementById('sidebarTitle');
-            if (sidebarTitle) {
-                // Ensure title fits and is not cut off
-                sidebarTitle.style.whiteSpace = 'nowrap';
-                sidebarTitle.style.overflow = 'hidden';
-                sidebarTitle.style.textOverflow = 'ellipsis';
-                sidebarTitle.style.maxWidth = '70%';
-            }
-        });
     </script>
 </body>
 </html>

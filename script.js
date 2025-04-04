@@ -47,13 +47,23 @@ class NotesApp {
         this.insertLink = this.insertLink.bind(this);
         this.insertImage = this.insertImage.bind(this);
         this.insertHorizontalRule = this.insertHorizontalRule.bind(this);
+        this.initializeFormattingTools = this.initializeFormattingTools.bind(this);
+        this.fixShareAndTagButtons = this.fixShareAndTagButtons.bind(this);
         
         // Then initialize elements and attach listeners
         this.initializeElements();
         this.attachEventListeners();
         this.currentNote = null;
         this.notes = [];
+        
+        // Add window resize handler for responsive formatting tools
+        window.addEventListener('resize', this.handleWindowResize.bind(this));
+        
+        // Initialize UI and load notes
         this.loadNotes();
+        
+        // Make app instance available globally for debugging and interop
+        window.notesApp = this;
     }
 
     initializeElements() {
@@ -550,31 +560,68 @@ class NotesApp {
         localStorage.setItem('notes', JSON.stringify(this.notes));
     }
 
+    /**
+     * Loads notes from localStorage and renders the list
+     * @param {string} noteIdToSelect - Optional ID of note to select after loading
+     */
     loadNotes(noteIdToSelect) {
-        const savedNotes = localStorage.getItem('notes');
-        this.notes = savedNotes ? JSON.parse(savedNotes) : [];
-        
-        // Load all tags
-        this.loadAllTags();
-        
-        // Check for shared note in URL
-        this.checkForSharedNote();
-        
-        this.renderNotesList();
-        
-        if (this.notes.length > 0) {
-            if (noteIdToSelect) {
-                // Find and select the specified note
-                const noteToSelect = this.notes.find(note => note.id === noteIdToSelect);
-                if (noteToSelect) {
-                    this.selectNote(noteToSelect);
-                    return;
+        try {
+            // Get notes from localStorage
+            const savedNotes = localStorage.getItem('notes');
+            if (savedNotes) {
+                this.notes = JSON.parse(savedNotes);
+                
+                // Create proper Note objects from the data
+                this.notes = this.notes.map(note => {
+                    return new Note(
+                        note.title,
+                        note.content,
+                        note.id,
+                        note.tags || [],
+                        note.shareId
+                    );
+                });
+                
+                // Sort notes by last modified date, newest first
+                this.notes.sort((a, b) => b.lastModified - a.lastModified);
+                
+                // Render all notes
+                this.renderNotesList();
+                
+                // Select the first note if available, or specific note if provided
+                if (this.notes.length > 0) {
+                    if (noteIdToSelect) {
+                        // Find the note with the specified ID
+                        const noteToSelect = this.notes.find(note => note.id == noteIdToSelect);
+                        if (noteToSelect) {
+                            this.selectNote(noteToSelect);
+                        } else {
+                            this.selectNote(this.notes[0]);
+                        }
+                    } else {
+                        this.selectNote(this.notes[0]);
+                    }
+                } else {
+                    // No notes, create a blank one
+                    this.createNewNote('Untitled Note', '');
                 }
+            } else {
+                // No notes saved yet, create a sample note
+                this.createNewNote('Welcome to NotePad', '<h1>Welcome to NotePad!</h1><p>This is a modern note-taking application. Get started by creating your first note.</p><p>Key features:</p><ul><li>Rich text formatting</li><li>File uploads</li><li>Note organization</li><li>Real-time saving</li></ul>');
             }
-            // Default behavior: select first note
-            this.selectNote(this.notes[0]);
-        } else {
-            this.createNewNote();
+            
+            // Load all tags
+            this.loadAllTags();
+            
+            // Check for shared note URLs
+            this.checkForSharedNote();
+            
+            // Ensure proper display of formatting tools based on device
+            this.initializeFormattingTools();
+        } catch (error) {
+            console.error('Error loading notes:', error);
+            // Create a default note in case of error
+            this.createNewNote('Untitled Note', '');
         }
     }
 
@@ -1510,6 +1557,78 @@ class NotesApp {
             note.tags && note.tags.includes(tag)
         );
         this.renderNotesList(filteredNotes);
+    }
+
+    /**
+     * Initialize formatting tools based on device type
+     * Ensures correct display across all environments
+     */
+    initializeFormattingTools() {
+        const isMobile = window.innerWidth <= 768;
+        
+        // PC-only formatting toolbar
+        const pcToolbar = document.querySelector('.format-toolbar.pc-only');
+        if (pcToolbar) {
+            pcToolbar.style.display = isMobile ? 'none' : 'flex';
+        }
+        
+        // Mobile formatting details element
+        const mobileDetails = document.querySelector('details.mobile-only');
+        if (mobileDetails) {
+            mobileDetails.style.display = isMobile ? 'block' : 'none';
+        }
+        
+        // Fix share and tag buttons for all environments
+        this.fixShareAndTagButtons();
+    }
+
+    /**
+     * Fix share and tag buttons for proper display across all devices
+     */
+    fixShareAndTagButtons() {
+        const shareBtn = document.getElementById('shareNoteBtn');
+        const tagBtn = document.getElementById('tagNoteBtn');
+        
+        if (shareBtn) {
+            // Make sure the icon is visible
+            const shareIcon = shareBtn.querySelector('i');
+            if (shareIcon) {
+                shareIcon.style.display = 'inline-block';
+                shareIcon.style.marginRight = '4px';
+            }
+            
+            // Make sure the button is visible
+            shareBtn.style.display = 'inline-flex';
+            shareBtn.style.alignItems = 'center';
+            shareBtn.style.justifyContent = 'center';
+        }
+        
+        if (tagBtn) {
+            // Make sure the icon is visible
+            const tagIcon = tagBtn.querySelector('i');
+            if (tagIcon) {
+                tagIcon.style.display = 'inline-block';
+                tagIcon.style.marginRight = '4px';
+            }
+            
+            // Make sure the button is visible
+            tagBtn.style.display = 'inline-flex';
+            tagBtn.style.alignItems = 'center';
+            tagBtn.style.justifyContent = 'center';
+        }
+    }
+
+    /**
+     * Handle window resize event to adjust UI for different screen sizes
+     */
+    handleWindowResize() {
+        // Debounce the resize event to avoid performance issues
+        if (this.resizeTimer) clearTimeout(this.resizeTimer);
+        
+        this.resizeTimer = setTimeout(() => {
+            // Re-initialize formatting tools based on new window size
+            this.initializeFormattingTools();
+        }, 250);
     }
 }
 
