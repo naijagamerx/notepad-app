@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="theme-color" content="#f9f9f9">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    
+    <!-- Favicon and App Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="images/icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/icon-192x192.png">
+    <link rel="apple-touch-icon" href="images/icon-192x192.png">
+    <link rel="mask-icon" href="images/icon-192x192.png" color="#007AFF">
+    <meta name="msapplication-TileImage" content="images/icon-192x192.png">
+    <meta name="msapplication-TileColor" content="#007AFF">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/fileOperations.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>NotePad - Modern Note Taking App</title>
+    <style>
+        /* Critical mobile fixes that need to be inline to take precedence */
+        @media (max-width: 768px) {
+            .sidebar-header {
+                display: flex !important;
+                visibility: visible !important;
+                position: sticky !important;
+                top: 0 !important;
+                z-index: 11 !important;
+                background-color: #f9f9f9 !important;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05) !important;
+            }
+            
+            .sidebar:not(.collapsed) {
+                transform: translateX(0) !important;
+                z-index: 10 !important;
+            }
+            
+            .sidebar.collapsed {
+                transform: translateX(-100%) !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2 id="sidebarTitle">Notes</h2>
+                <div class="header-buttons">
+                    <button id="newFolderBtn" class="icon-btn" title="New Folder">
+                        <i class="fas fa-folder-plus"></i>
+                    </button>
+                    <button id="newNoteBtn" class="icon-btn" title="New Note">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search">
+            </div>
+            <div class="folders-section">
+                <div class="section-header">
+                    <h3>Folders</h3>
+                </div>
+                <div id="foldersList" class="folders-list">
+                    <!-- Folders will be dynamically added here -->
+                </div>
+            </div>
+            <div class="notes-section">
+                <div class="section-header">
+                    <h3>Notes</h3>
+                </div>
+                <div id="notesList" class="notes-list" onclick="if (window.noteOperations && event.target.classList.contains('delete-note')) { window.noteOperations.deleteNote(event.target.dataset.noteId); }">
+                    <!-- Notes will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="toolbar">
+                <div class="toolbar-left">
+                    <button id="sidebarToggle" class="toolbar-btn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <button id="uploadBtn" class="toolbar-btn" title="Upload Text">
+                        <i class="fas fa-file-upload"></i>
+                    </button>
+                    <button id="uploadTextBtn" class="toolbar-btn" title="Upload Text File">
+                        <i class="fas fa-file-alt"></i>
+                        <span class="btn-text">Upload Text</span>
+                    </button>
+                    <input type="file" id="uploadInput" accept=".txt,.md,.markdown,.doc,.docx" style="display: none">
+                    
+                    <!-- PC-only formatting toolbar -->
+                    <div class="format-toolbar pc-only">
+                        <button id="toolbar-boldBtn" title="Bold"><i class="fas fa-bold"></i></button>
+                        <button id="toolbar-italicBtn" title="Italic"><i class="fas fa-italic"></i></button>
+                        <button id="toolbar-underlineBtn" title="Underline"><i class="fas fa-underline"></i></button>
+                        <button id="toolbar-strikeBtn" title="Strike"><i class="fas fa-strikethrough"></i></button>
+                        <button id="toolbar-headingBtn" title="Heading"><i class="fas fa-heading"></i></button>
+                        <button id="toolbar-quoteBtn" title="Quote"><i class="fas fa-quote-right"></i></button>
+                        <button id="toolbar-codeBtn" title="Code"><i class="fas fa-code"></i></button>
+                        <button id="toolbar-listBtn" title="List"><i class="fas fa-list"></i></button>
+                        <span class="format-divider"></span>
+                        <button id="toolbar-alignLeftBtn" title="Align Left"><i class="fas fa-align-left"></i></button>
+                        <button id="toolbar-alignCenterBtn" title="Align Center"><i class="fas fa-align-center"></i></button>
+                        <button id="toolbar-alignRightBtn" title="Align Right"><i class="fas fa-align-right"></i></button>
+                        <button id="toolbar-indentBtn" title="Indent"><i class="fas fa-indent"></i></button>
+                        <button id="toolbar-outdentBtn" title="Outdent"><i class="fas fa-outdent"></i></button>
+                        <span class="format-divider"></span>
+                        <button id="toolbar-linkBtn" title="Insert Link"><i class="fas fa-link"></i></button>
+                        <button id="toolbar-imageBtn" title="Insert Image"><i class="fas fa-image"></i></button>
+                        <button id="toolbar-hrBtn" title="Horizontal Rule"><i class="fas fa-minus"></i></button>
+                    </div>
+                </div>
+                <div class="toolbar-right">
+                    <button id="shareNoteBtn" title="Share Note">
+                        <i class="fas fa-share-alt"></i>
+                    </button>
+                    <button id="tagNoteBtn" title="Add Tags">
+                        <i class="fas fa-tags"></i>
+                    </button>
+                    <button id="saveNoteBtn" title="Save Note">
+                        <i class="fas fa-save"></i>
+                        <span class="btn-text">Save</span>
+                    </button>
+                    <button id="deleteNoteBtn" title="Delete Note">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="note-editor">
+                <div class="editor-toolbar">
+                    <input type="text" id="noteTitleInput" placeholder="Note Title">
+                    <details class="mobile-only">
+                        <summary>Formatting Options</summary>
+                        <div class="format-buttons">
+                            <button id="boldBtn" title="Bold"><i class="fas fa-bold"></i></button>
+                            <button id="italicBtn" title="Italic"><i class="fas fa-italic"></i></button>
+                            <button id="underlineBtn" title="Underline"><i class="fas fa-underline"></i></button>
+                            <button id="strikeBtn" title="Strike"><i class="fas fa-strikethrough"></i></button>
+                            <button id="headingBtn" title="Heading"><i class="fas fa-heading"></i></button>
+                            <button id="quoteBtn" title="Quote"><i class="fas fa-quote-right"></i></button>
+                            <button id="codeBtn" title="Code"><i class="fas fa-code"></i></button>
+                            <button id="listBtn" title="List"><i class="fas fa-list"></i></button>
+                        </div>
+                    </details>
+                </div>
+                <div class="note-content" contenteditable="true"></div>
+            </div>
+        </div>
+    </div>
+    <div id="folderContextMenu" class="context-menu"></div>
+    
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteConfirmModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fas fa-exclamation-triangle warning-icon"></i>
+                <h2>Delete Note</h2>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this note?</p>
+                <p class="note-title"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelDelete" class="btn btn-secondary">Cancel</button>
+                <button id="confirmDelete" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Folder Creation Modal -->
+    <div id="folderModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Folder</h3>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label for="folderName">Folder Name</label>
+                    <input type="text" id="folderName" placeholder="Enter folder name">
+                </div>
+                <div class="modal-footer">
+                    <button id="createFolderBtn" class="primary-btn">Create</button>
+                    <button id="cancelFolderBtn" class="secondary-btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Note Modal -->
+    <div id="shareModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Share Note</h3>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="share-modal-preview">
+                    <div class="preview-title" id="sharePreviewTitle">Note Title</div>
+                    <div class="preview-content" id="sharePreviewContent">Note content will appear here...</div>
+                </div>
+                
+                <div class="share-link-container">
+                    <div class="share-link-header">
+                        <i class="fas fa-link"></i>
+                        <span>Share this note with others</span>
+                    </div>
+                    <div class="share-link-content">
+                        <div class="share-link-url">
+                            <input type="text" id="shareLink" readonly>
+                            <button id="copyShareLinkBtn" class="copy-btn">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                            <div class="copy-status" id="copyStatus">Copied!</div>
+                        </div>
+                        
+                        <div class="share-options-grid">
+                            <div id="emailShareBtn" class="share-option-btn email">
+                                <i class="fas fa-envelope"></i>
+                                <span>Email</span>
+                            </div>
+                            <div id="whatsappShareBtn" class="share-option-btn whatsapp">
+                                <i class="fab fa-whatsapp"></i>
+                                <span>WhatsApp</span>
+                            </div>
+                            <div id="twitterShareBtn" class="share-option-btn twitter">
+                                <i class="fab fa-twitter"></i>
+                                <span>Twitter</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="closeShareBtn" class="secondary-btn">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Tag Note Modal -->
+    <div id="tagModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Manage Tags</h3>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label for="newTag">Add Tag</label>
+                    <div class="tag-input-container">
+                        <input type="text" id="newTag" placeholder="Enter tag name">
+                        <button id="addTagBtn" class="primary-btn">Add</button>
+                    </div>
+                </div>
+                <div class="current-tags">
+                    <h4>Current Tags</h4>
+                    <div id="tagsContainer" class="tags-container">
+                        <!-- Tags will be added here dynamically -->
+                    </div>
+                </div>
+                <div class="popular-tags">
+                    <h4>Popular Tags</h4>
+                    <div id="popularTagsContainer" class="tags-container">
+                        <!-- Popular tags will be added here dynamically -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveTagsBtn" class="primary-btn">Save</button>
+                <button id="cancelTagsBtn" class="secondary-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Tab Bar -->
+    <div class="mobile-tab-bar">
+        <button class="tab-btn" id="allNotesTab">
+            <i class="fas fa-sticky-note"></i>
+            <span>All Notes</span>
+        </button>
+        <button class="tab-btn" id="foldersTab">
+            <i class="fas fa-folder"></i>
+            <span>Folders</span>
+        </button>
+        <button class="tab-btn" id="newNoteTab">
+            <i class="fas fa-plus-circle"></i>
+            <span>New</span>
+        </button>
+        <button class="tab-btn" id="searchTab">
+            <i class="fas fa-search"></i>
+            <span>Search</span>
+        </button>
+    </div>
+
+    <script src="js/noteOperations.js"></script>
+    <script src="js/fileOperations.js"></script>
+    <script src="js/mobileApp.js"></script>
+    <script src="script.js"></script>
+    <script src="folders.js"></script>
+    <script>
+        // Register service worker for PWA functionality
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(registration => {
+                        console.log('Service Worker registered with scope:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.error('Service Worker registration failed:', error);
+                    });
+            });
+        }
+        
+        // Fix for title header on mobile
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarTitle = document.getElementById('sidebarTitle');
+            if (sidebarTitle) {
+                // Ensure title fits and is not cut off
+                sidebarTitle.style.whiteSpace = 'nowrap';
+                sidebarTitle.style.overflow = 'hidden';
+                sidebarTitle.style.textOverflow = 'ellipsis';
+                sidebarTitle.style.maxWidth = '70%';
+            }
+        });
+    </script>
+</body>
+</html>

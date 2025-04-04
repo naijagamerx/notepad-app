@@ -1,0 +1,446 @@
+/**
+ * Mobile-specific styles for NotePad app
+ */
+
+/* Hide mobile tab bar by default for desktop */
+.mobile-tab-bar {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    /* Show mobile tab bar */
+    .mobile-tab-bar {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #f9f9f9;
+        border-top: 1px solid #e0e0e0;
+        z-index: 1000;
+        height: 60px;
+        padding: 5px 0;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Hide PC-only elements */
+    .pc-only {
+        display: none !important;
+    }
+    
+    /* Show mobile-only elements */
+    .mobile-only {
+        display: block !important;
+    }
+    
+    /* Format toolbar specific mobile adjustments */
+    .format-toolbar {
+        display: none !important;
+    }
+    
+    /* Format buttons in mobile layout */
+    .format-buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        padding: 12px;
+    }
+    
+    /* Tab buttons */
+    .tab-btn {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 5px;
+        background: none;
+        border: none;
+        color: #666;
+        font-size: 10px;
+        transition: all 0.2s ease;
+    }
+    
+    .tab-btn i {
+        font-size: 22px;
+        margin-bottom: 3px;
+    }
+    
+    .tab-btn.active {
+        color: #007AFF;
+    }
+    
+    /* Adjust main content to make room for tab bar */
+    .main-content {
+        padding-bottom: 60px;
+        z-index: 5;
+    }
+    
+    /* Fix sidebar positioning and animation */
+    .sidebar:not(.collapsed) {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 10;
+        transform: translateX(0);
+        transition: transform 0.3s ease;
+        overflow-y: auto;
+    }
+    
+    .sidebar.collapsed {
+        transform: translateX(-100%);
+    }
+    
+    /* Fix header spacing issues */
+    .sidebar-header {
+        padding: 20px 15px 15px;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #f9f9f9;
+        position: sticky;
+        top: 0;
+        z-index: 11;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+    
+    .sidebar-header h2 {
+        font-size: 22px;
+        margin: 0;
+        padding: 0;
+        line-height: 1.2;
+        max-width: 70%;
+        display: block;
+    }
+    
+    /* Ensure sections have proper spacing */
+    .section-header {
+        padding: 15px 15px 5px;
+        margin-bottom: 0;
+    }
+    
+    .section-header h3 {
+        font-size: 16px;
+        margin-top: 5px;
+    }
+    
+    /* Hide the main toolbar on mobile */
+    .toolbar {
+        display: none;
+    }
+    
+    /* Make the sidebar toggle a floating action button */
+    #sidebarToggle {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        position: fixed;
+        right: 20px;
+        bottom: 80px; /* Above the tab bar */
+        z-index: 1001;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #007AFF;
+        color: white;
+        border: none;
+    }
+    
+    /* Note title input styling for mobile */
+    #noteTitleInput {
+        width: 100%;
+        padding: 15px;
+        font-size: 18px;
+        border: none;
+        border-bottom: 1px solid #e0e0e0;
+        background: #fff;
+        margin-bottom: 10px;
+        font-weight: 500;
+        color: #333;
+        transition: all 0.2s ease;
+    }
+
+    #noteTitleInput:focus {
+        outline: none;
+        border-bottom-color: #007AFF;
+        background: #f8f9fa;
+    }
+    
+    /* Collapsible editor toolbar for mobile */
+    .editor-toolbar {
+        padding: 0;
+        margin-bottom: 10px;
+    }
+    
+    .editor-toolbar details {
+        margin: 12px 8px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .editor-toolbar summary {
+        padding: 14px 16px;
+        font-size: 16px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #f5f5f7;
+        color: #333;
+    }
+    
+    .editor-toolbar details[open] summary {
+        border-bottom: 1px solid #e0e0e5;
+    }
+    
+    /* Format buttons */
+    .format-buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        padding: 16px;
+        background-color: #f5f5f7;
+    }
+    
+    .format-buttons button {
+        width: 100%;
+        height: 44px;
+        border-radius: 10px;
+        background-color: white;
+        border: 1px solid #e0e0e5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #333;
+        font-size: 18px;
+        transition: all 0.2s ease;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+    
+    .format-buttons button:active {
+        transform: scale(0.95);
+        background-color: #f0f0f0;
+    }
+    
+    .format-buttons button i {
+        font-size: 16px;
+    }
+    
+    /* Action buttons */
+    .action-buttons {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+    }
+    
+    #saveNoteBtn {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        padding: 10px 20px;
+        font-weight: 500;
+        box-shadow: 0 2px 4px rgba(76, 175, 80, 0.3);
+        transition: all 0.2s ease;
+    }
+    
+    #saveNoteBtn:active {
+        transform: scale(0.95);
+        box-shadow: 0 1px 2px rgba(76, 175, 80, 0.3);
+    }
+    
+    #deleteNoteBtn {
+        background-color: #ff5252;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 4px rgba(255, 82, 82, 0.3);
+        transition: all 0.2s ease;
+    }
+    
+    #deleteNoteBtn:active {
+        transform: scale(0.95);
+        box-shadow: 0 1px 2px rgba(255, 82, 82, 0.3);
+    }
+    
+    #deleteNoteBtn i {
+        font-size: 18px;
+    }
+    
+    /* Hide text in buttons for more compact UI */
+    .btn-text {
+        display: none;
+    }
+    
+    /* Touch-friendly spacing */
+    .note-editor {
+        padding: 15px;
+    }
+    
+    /* Improve list containers */
+    .notes-list, 
+    .folders-list {
+        padding: 5px;
+        margin-top: 5px;
+    }
+    
+    /* Add momentum scrolling for iOS */
+    .notes-list, 
+    .folders-list, 
+    .note-content {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Better tap states for mobile */
+    button:active,
+    .note-item:active,
+    .folder-item:active {
+        opacity: 0.7;
+    }
+    
+    /* Improve form usability on mobile */
+    input[type="text"] {
+        font-size: 16px; /* Prevents iOS zoom on focus */
+    }
+    
+    /* Fix for iOS position fixed issues */
+    .mobile-tab-bar {
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+        left: 0;
+    }
+    
+    /* When keyboard is open, we need to ensure the editor is still visible */
+    .note-content:focus {
+        position: relative;
+        z-index: 2;
+    }
+    
+    /* Adjust modal positioning */
+    .modal-content {
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+    
+    /* Mobile-optimized note items */
+    .note-item {
+        position: relative;
+        padding: 15px;
+        margin: 0 5px 10px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        transition: all 0.2s ease;
+        overflow: hidden;
+    }
+    
+    .note-item:after {
+        content: '';
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        width: 8px;
+        height: 8px;
+        border-top: 2px solid #999;
+        border-right: 2px solid #999;
+        transform: translateY(-50%) rotate(45deg);
+    }
+    
+    .note-item:active {
+        background-color: #f8f8f8;
+        transform: scale(0.98);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+    
+    .note-item .note-title {
+        font-weight: 600;
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 5px;
+        padding-right: 20px;
+    }
+    
+    .note-item .note-preview {
+        font-size: 14px;
+        color: #666;
+        margin: 5px 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        padding-right: 20px;
+    }
+    
+    .note-item .note-date {
+        font-size: 12px;
+        color: #999;
+        margin-top: 8px;
+    }
+    
+    .note-item.selected {
+        background-color: #f5f5f5;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
+    }
+}
+
+/* iPhone X and newer with notches */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+    .mobile-tab-bar {
+        padding-bottom: env(safe-area-inset-bottom);
+        height: calc(60px + env(safe-area-inset-bottom));
+    }
+    
+    .main-content {
+        padding-bottom: calc(60px + env(safe-area-inset-bottom));
+    }
+    
+    /* Ensure content doesn't get hidden behind notches */
+    .sidebar-header {
+        padding-top: max(20px, env(safe-area-inset-top));
+    }
+}
+
+/* Specific adjustments for very small screens */
+@media (max-width: 320px) {
+    .sidebar-header {
+        padding: 15px 10px;
+        height: 60px;
+    }
+    
+    .sidebar-header h2 {
+        font-size: 20px;
+    }
+    
+    .note-item h3 {
+        font-size: 14px;
+    }
+    
+    .folder-item, .note-item {
+        padding: 10px;
+    }
+    
+    .format-buttons {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .tab-btn i {
+        font-size: 18px;
+    }
+    
+    .tab-btn span {
+        font-size: 9px;
+    }
+} 
