@@ -251,6 +251,200 @@
             transform: translateY(-2px);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
+        
+        /* Share modal preview styles - critical for appearance */
+        .share-modal-preview {
+            margin-bottom: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .preview-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+        
+        .preview-content {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .share-link-container {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            background-color: #fff;
+        }
+        
+        .share-link-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .share-link-header i {
+            color: #007AFF;
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        .share-link-url {
+            display: flex;
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .share-link-url input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .copy-btn {
+            margin-left: 10px;
+            background-color: #f0f0f0;
+            border: none;
+            padding: 0 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+        
+        .copy-btn i {
+            margin-right: 5px;
+        }
+        
+        .copy-status {
+            position: absolute;
+            right: 120px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        /* Primary and secondary buttons */
+        .primary-btn, .secondary-btn, .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .primary-btn, .btn-primary {
+            background-color: #007AFF;
+            color: white;
+        }
+        
+        .secondary-btn, .btn-secondary {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-danger {
+            background-color: #ff3b30;
+            color: white;
+        }
+        
+        .primary-btn:hover, .btn-primary:hover {
+            background-color: #0069d9;
+        }
+        
+        .secondary-btn:hover, .btn-secondary:hover {
+            background-color: #e2e2e2;
+        }
+        
+        .btn-danger:hover {
+            background-color: #dc3545;
+        }
+        
+        /* Input styles */
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        /* Tags styles */
+        .tag-input-container {
+            display: flex;
+        }
+        
+        .tag-input-container input {
+            flex: 1;
+            margin-right: 10px;
+        }
+        
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .tag {
+            background-color: #e9f0ff;
+            color: #007AFF;
+            padding: 5px 10px;
+            border-radius: 16px;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .tag i {
+            margin-left: 5px;
+            cursor: pointer;
+        }
+        
+        .tag i:hover {
+            color: #ff3b30;
+        }
+        
+        /* Modal animation */
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 <body>
@@ -636,12 +830,37 @@
                             console.log('Creating new folder');
                             const folderModal = document.getElementById('folderModal');
                             if (folderModal) {
-                                folderModal.style.display = 'block';
+                                // Make sure modal is visible and properly styled
+                                Object.assign(folderModal.style, {
+                                    display: 'block',
+                                    position: 'fixed',
+                                    top: '0',
+                                    left: '0',
+                                    width: '100%',
+                                    height: '100%',
+                                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                    zIndex: '100',
+                                    overflow: 'auto'
+                                });
+                                
+                                // Style the modal content
+                                const modalContent = folderModal.querySelector('.modal-content');
+                                if (modalContent) {
+                                    Object.assign(modalContent.style, {
+                                        backgroundColor: '#fefefe',
+                                        margin: '10% auto',
+                                        padding: '20px',
+                                        borderRadius: '10px',
+                                        width: '90%',
+                                        maxWidth: '600px',
+                                        boxShadow: '0 5px 15px rgba(0, 0, 0, 0.3)'
+                                    });
+                                }
                             }
                         });
                     }
                     
-                    // Fix Share button
+                    // Enhanced Share button
                     const shareNoteBtn = document.getElementById('shareNoteBtn');
                     if (shareNoteBtn) {
                         shareNoteBtn.addEventListener('click', function() {
@@ -670,8 +889,176 @@
                                     shareLink.value = `${currentUrl}?share=${shareId}`;
                                 }
                                 
-                                // Show the modal
-                                shareModal.style.display = 'block';
+                                // Show the modal with proper styling
+                                Object.assign(shareModal.style, {
+                                    display: 'block',
+                                    position: 'fixed',
+                                    top: '0',
+                                    left: '0',
+                                    width: '100%',
+                                    height: '100%',
+                                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                    zIndex: '100',
+                                    overflow: 'auto'
+                                });
+                                
+                                // Style the modal content
+                                const modalContent = shareModal.querySelector('.modal-content');
+                                if (modalContent) {
+                                    Object.assign(modalContent.style, {
+                                        backgroundColor: '#fefefe',
+                                        margin: '10% auto',
+                                        padding: '20px',
+                                        borderRadius: '10px',
+                                        width: '90%',
+                                        maxWidth: '600px',
+                                        boxShadow: '0 5px 15px rgba(0, 0, 0, 0.3)'
+                                    });
+                                }
+                                
+                                // Style the share modal preview
+                                const preview = shareModal.querySelector('.share-modal-preview');
+                                if (preview) {
+                                    Object.assign(preview.style, {
+                                        marginBottom: '20px',
+                                        border: '1px solid #e0e0e0',
+                                        borderRadius: '8px',
+                                        padding: '15px',
+                                        backgroundColor: '#f9f9f9',
+                                        maxHeight: '200px',
+                                        overflowY: 'auto'
+                                    });
+                                }
+                                
+                                // Style the preview title
+                                if (sharePreviewTitle) {
+                                    Object.assign(sharePreviewTitle.style, {
+                                        fontSize: '18px',
+                                        fontWeight: 'bold',
+                                        marginBottom: '10px',
+                                        color: '#333',
+                                        borderBottom: '1px solid #eee',
+                                        paddingBottom: '5px'
+                                    });
+                                }
+                                
+                                // Style the preview content
+                                if (sharePreviewContent) {
+                                    Object.assign(sharePreviewContent.style, {
+                                        fontSize: '14px',
+                                        color: '#666',
+                                        lineHeight: '1.5'
+                                    });
+                                }
+                                
+                                // Style the share link container
+                                const linkContainer = shareModal.querySelector('.share-link-container');
+                                if (linkContainer) {
+                                    Object.assign(linkContainer.style, {
+                                        border: '1px solid #e0e0e0',
+                                        borderRadius: '8px',
+                                        padding: '15px',
+                                        backgroundColor: '#fff'
+                                    });
+                                }
+                                
+                                // Style the share link URL
+                                const linkUrl = shareModal.querySelector('.share-link-url');
+                                if (linkUrl) {
+                                    Object.assign(linkUrl.style, {
+                                        display: 'flex',
+                                        position: 'relative',
+                                        marginBottom: '20px'
+                                    });
+                                }
+                                
+                                // Style the share link input
+                                if (shareLink) {
+                                    Object.assign(shareLink.style, {
+                                        flex: '1',
+                                        padding: '10px',
+                                        border: '1px solid #ddd',
+                                        borderRadius: '4px',
+                                        fontSize: '14px'
+                                    });
+                                }
+                                
+                                // Style the copy button
+                                const copyBtn = shareModal.querySelector('.copy-btn');
+                                if (copyBtn) {
+                                    Object.assign(copyBtn.style, {
+                                        marginLeft: '10px',
+                                        backgroundColor: '#f0f0f0',
+                                        border: 'none',
+                                        padding: '0 15px',
+                                        borderRadius: '4px',
+                                        cursor: 'pointer',
+                                        color: '#333',
+                                        display: 'flex',
+                                        alignItems: 'center'
+                                    });
+                                }
+                                
+                                // Style the share options grid
+                                const shareOptions = shareModal.querySelector('.share-options-grid');
+                                if (shareOptions) {
+                                    Object.assign(shareOptions.style, {
+                                        display: 'grid',
+                                        gridTemplateColumns: 'repeat(3, 1fr)',
+                                        gap: '10px',
+                                        marginTop: '20px'
+                                    });
+                                }
+                                
+                                // Style all share option buttons
+                                const shareOptionBtns = shareModal.querySelectorAll('.share-option-btn');
+                                shareOptionBtns.forEach(btn => {
+                                    Object.assign(btn.style, {
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        padding: '15px',
+                                        borderRadius: '8px',
+                                        cursor: 'pointer',
+                                        transition: 'all 0.2s'
+                                    });
+                                    
+                                    const icon = btn.querySelector('i');
+                                    if (icon) {
+                                        Object.assign(icon.style, {
+                                            fontSize: '24px',
+                                            marginBottom: '8px',
+                                            display: 'inline-block'
+                                        });
+                                    }
+                                });
+                                
+                                // Style email button
+                                const emailBtn = shareModal.querySelector('.share-option-btn.email');
+                                if (emailBtn) {
+                                    Object.assign(emailBtn.style, {
+                                        backgroundColor: '#f2f2f7',
+                                        color: '#007AFF'
+                                    });
+                                }
+                                
+                                // Style WhatsApp button
+                                const whatsAppBtn = shareModal.querySelector('.share-option-btn.whatsapp');
+                                if (whatsAppBtn) {
+                                    Object.assign(whatsAppBtn.style, {
+                                        backgroundColor: '#e9ffef',
+                                        color: '#25D366'
+                                    });
+                                }
+                                
+                                // Style Twitter button
+                                const twitterBtn = shareModal.querySelector('.share-option-btn.twitter');
+                                if (twitterBtn) {
+                                    Object.assign(twitterBtn.style, {
+                                        backgroundColor: '#e8f5fd',
+                                        color: '#1DA1F2'
+                                    });
+                                }
                             } else {
                                 alert('Share functionality is not available.');
                             }
@@ -685,7 +1072,257 @@
                             console.log('Tag button clicked');
                             const tagModal = document.getElementById('tagModal');
                             if (tagModal) {
-                                tagModal.style.display = 'block';
+                                // Make sure modal is visible and properly styled
+                                Object.assign(tagModal.style, {
+                                    display: 'block',
+                                    position: 'fixed',
+                                    top: '0',
+                                    left: '0',
+                                    width: '100%',
+                                    height: '100%',
+                                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                    zIndex: '100',
+                                    overflow: 'auto'
+                                });
+                                
+                                // Style the modal content
+                                const modalContent = tagModal.querySelector('.modal-content');
+                                if (modalContent) {
+                                    Object.assign(modalContent.style, {
+                                        backgroundColor: '#fefefe',
+                                        margin: '10% auto',
+                                        padding: '20px',
+                                        borderRadius: '10px',
+                                        width: '90%',
+                                        maxWidth: '600px',
+                                        boxShadow: '0 5px 15px rgba(0, 0, 0, 0.3)'
+                                    });
+                                }
+                                
+                                // Style the input group
+                                const inputGroup = tagModal.querySelector('.input-group');
+                                if (inputGroup) {
+                                    Object.assign(inputGroup.style, {
+                                        marginBottom: '20px'
+                                    });
+                                    
+                                    const label = inputGroup.querySelector('label');
+                                    if (label) {
+                                        Object.assign(label.style, {
+                                            display: 'block',
+                                            marginBottom: '8px',
+                                            fontWeight: '500'
+                                        });
+                                    }
+                                }
+                                
+                                // Style the tag input container
+                                const tagInputContainer = tagModal.querySelector('.tag-input-container');
+                                if (tagInputContainer) {
+                                    Object.assign(tagInputContainer.style, {
+                                        display: 'flex'
+                                    });
+                                    
+                                    const input = tagInputContainer.querySelector('input');
+                                    if (input) {
+                                        Object.assign(input.style, {
+                                            flex: '1',
+                                            marginRight: '10px',
+                                            padding: '10px',
+                                            border: '1px solid #ddd',
+                                            borderRadius: '4px',
+                                            fontSize: '14px'
+                                        });
+                                    }
+                                    
+                                    const addBtn = tagInputContainer.querySelector('#addTagBtn');
+                                    if (addBtn) {
+                                        Object.assign(addBtn.style, {
+                                            backgroundColor: '#007AFF',
+                                            color: 'white',
+                                            padding: '8px 16px',
+                                            borderRadius: '6px',
+                                            border: 'none',
+                                            cursor: 'pointer',
+                                            fontSize: '14px'
+                                        });
+                                        
+                                        // Add tag functionality
+                                        addBtn.addEventListener('click', function() {
+                                            const newTagInput = document.getElementById('newTag');
+                                            const tagsContainer = document.getElementById('tagsContainer');
+                                            
+                                            if (newTagInput && tagsContainer) {
+                                                const tagText = newTagInput.value.trim();
+                                                if (tagText) {
+                                                    // Create new tag element
+                                                    const tagElement = document.createElement('div');
+                                                    tagElement.className = 'tag';
+                                                    tagElement.innerHTML = `${tagText} <i class="fas fa-times-circle"></i>`;
+                                                    
+                                                    // Style the tag
+                                                    Object.assign(tagElement.style, {
+                                                        backgroundColor: '#e9f0ff',
+                                                        color: '#007AFF',
+                                                        padding: '5px 10px',
+                                                        borderRadius: '16px',
+                                                        fontSize: '12px',
+                                                        display: 'inline-flex',
+                                                        alignItems: 'center',
+                                                        margin: '0 8px 8px 0'
+                                                    });
+                                                    
+                                                    // Add click event to remove icon
+                                                    const removeIcon = tagElement.querySelector('i');
+                                                    if (removeIcon) {
+                                                        Object.assign(removeIcon.style, {
+                                                            marginLeft: '5px',
+                                                            cursor: 'pointer'
+                                                        });
+                                                        
+                                                        removeIcon.addEventListener('click', function() {
+                                                            tagElement.remove();
+                                                        });
+                                                    }
+                                                    
+                                                    // Add the tag to the container
+                                                    tagsContainer.appendChild(tagElement);
+                                                    
+                                                    // Clear the input
+                                                    newTagInput.value = '';
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                                
+                                // Style the tags containers
+                                const tagsContainers = tagModal.querySelectorAll('.tags-container');
+                                tagsContainers.forEach(container => {
+                                    Object.assign(container.style, {
+                                        display: 'flex',
+                                        flexWrap: 'wrap',
+                                        gap: '8px',
+                                        marginTop: '10px',
+                                        marginBottom: '20px'
+                                    });
+                                });
+                                
+                                // Style the buttons in the footer
+                                const saveBtn = tagModal.querySelector('#saveTagsBtn');
+                                const cancelBtn = tagModal.querySelector('#cancelTagsBtn');
+                                
+                                if (saveBtn) {
+                                    Object.assign(saveBtn.style, {
+                                        backgroundColor: '#007AFF',
+                                        color: 'white',
+                                        padding: '8px 16px',
+                                        borderRadius: '6px',
+                                        border: 'none',
+                                        cursor: 'pointer',
+                                        fontSize: '14px'
+                                    });
+                                    
+                                    // Add save tags functionality
+                                    saveBtn.addEventListener('click', function() {
+                                        tagModal.style.display = 'none';
+                                        
+                                        // Extract tags
+                                        const tagElements = tagsContainer.querySelectorAll('.tag');
+                                        const tags = Array.from(tagElements).map(tag => {
+                                            return tag.textContent.trim();
+                                        });
+                                        
+                                        console.log('Saved tags:', tags);
+                                        
+                                        // Here you would normally update the tags in your notes data
+                                        // For now, we just close the modal
+                                    });
+                                }
+                                
+                                if (cancelBtn) {
+                                    Object.assign(cancelBtn.style, {
+                                        backgroundColor: '#f0f0f0',
+                                        color: '#333',
+                                        padding: '8px 16px',
+                                        borderRadius: '6px',
+                                        border: 'none',
+                                        cursor: 'pointer',
+                                        fontSize: '14px',
+                                        marginLeft: '10px'
+                                    });
+                                }
+                                
+                                // Generate some popular tags if container is empty
+                                const popularTagsContainer = document.getElementById('popularTagsContainer');
+                                if (popularTagsContainer && popularTagsContainer.children.length === 0) {
+                                    const popularTags = ['work', 'personal', 'important', 'idea', 'todo'];
+                                    
+                                    popularTags.forEach(tagText => {
+                                        const tagElement = document.createElement('div');
+                                        tagElement.className = 'tag';
+                                        tagElement.textContent = tagText;
+                                        
+                                        // Style the tag
+                                        Object.assign(tagElement.style, {
+                                            backgroundColor: '#e9f0ff',
+                                            color: '#007AFF',
+                                            padding: '5px 10px',
+                                            borderRadius: '16px',
+                                            fontSize: '12px',
+                                            display: 'inline-flex',
+                                            alignItems: 'center',
+                                            margin: '0 8px 8px 0',
+                                            cursor: 'pointer'
+                                        });
+                                        
+                                        // Add click event to add the tag
+                                        tagElement.addEventListener('click', function() {
+                                            const tagsContainer = document.getElementById('tagsContainer');
+                                            
+                                            // Check if tag already exists
+                                            const existingTags = Array.from(tagsContainer.querySelectorAll('.tag'))
+                                                .map(tag => tag.textContent.trim());
+                                            
+                                            if (!existingTags.includes(tagText)) {
+                                                // Create a copy of the tag with remove button
+                                                const newTag = document.createElement('div');
+                                                newTag.className = 'tag';
+                                                newTag.innerHTML = `${tagText} <i class="fas fa-times-circle"></i>`;
+                                                
+                                                // Style the tag
+                                                Object.assign(newTag.style, {
+                                                    backgroundColor: '#e9f0ff',
+                                                    color: '#007AFF',
+                                                    padding: '5px 10px',
+                                                    borderRadius: '16px',
+                                                    fontSize: '12px',
+                                                    display: 'inline-flex',
+                                                    alignItems: 'center',
+                                                    margin: '0 8px 8px 0'
+                                                });
+                                                
+                                                // Add click event to remove icon
+                                                const removeIcon = newTag.querySelector('i');
+                                                if (removeIcon) {
+                                                    Object.assign(removeIcon.style, {
+                                                        marginLeft: '5px',
+                                                        cursor: 'pointer'
+                                                    });
+                                                    
+                                                    removeIcon.addEventListener('click', function() {
+                                                        newTag.remove();
+                                                    });
+                                                }
+                                                
+                                                // Add the tag to the container
+                                                tagsContainer.appendChild(newTag);
+                                            }
+                                        });
+                                        
+                                        popularTagsContainer.appendChild(tagElement);
+                                    });
+                                }
                             } else {
                                 alert('Tag functionality is not available.');
                             }
