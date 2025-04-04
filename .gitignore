@@ -34,4 +34,16 @@ build/
 # Temporary files
 *.log
 *.tmp
+.temp/
+
+# Zip files
+*.zip
+
+# Specific files to ignore
+read.txt
+read.md
+
+# Temporary files
+*.log
+*.tmp
 .temp/ 
