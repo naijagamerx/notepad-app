@@ -546,14 +546,19 @@
                 
                 if (!fontAwesomeLoaded) {
                     console.error('FontAwesome not loaded correctly');
-                    // Attempt to reload FontAwesome
-                    const link = document.createElement('link');
-                    link.rel = 'stylesheet';
-                    link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
-                    link.integrity = 'sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==';
-                    link.crossOrigin = 'anonymous';
-                    link.referrerPolicy = 'no-referrer';
-                    document.head.appendChild(link);
+                    // Attempt to reload FontAwesome with multiple approaches
+                    const links = [
+                        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
+                        'https://use.fontawesome.com/releases/v6.4.0/css/all.css',
+                        'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'
+                    ];
+                    
+                    links.forEach(url => {
+                        const link = document.createElement('link');
+                        link.rel = 'stylesheet';
+                        link.href = url;
+                        document.head.appendChild(link);
+                    });
                 }
                 
                 // Check for required JavaScript files with both relative and absolute paths
@@ -602,6 +607,171 @@
             
             // Check if NotesApp initialized correctly
             setTimeout(function() {
+                // Try to fix common button functions directly
+                try {
+                    // Fix "New Note" button
+                    const newNoteBtn = document.getElementById('newNoteBtn');
+                    if (newNoteBtn) {
+                        newNoteBtn.addEventListener('click', function() {
+                            console.log('Creating new note');
+                            if (window.notesApp && typeof window.notesApp.createNewNote === 'function') {
+                                window.notesApp.createNewNote();
+                            } else {
+                                // Minimal implementation if notesApp is not available
+                                const noteTitle = document.getElementById('noteTitleInput');
+                                const noteContent = document.querySelector('.note-content');
+                                if (noteTitle && noteContent) {
+                                    noteTitle.value = 'Untitled Note';
+                                    noteContent.innerHTML = '';
+                                    noteContent.focus();
+                                }
+                            }
+                        });
+                    }
+                    
+                    // Fix "New Folder" button
+                    const newFolderBtn = document.getElementById('newFolderBtn');
+                    if (newFolderBtn) {
+                        newFolderBtn.addEventListener('click', function() {
+                            console.log('Creating new folder');
+                            const folderModal = document.getElementById('folderModal');
+                            if (folderModal) {
+                                folderModal.style.display = 'block';
+                            }
+                        });
+                    }
+                    
+                    // Fix Share button
+                    const shareNoteBtn = document.getElementById('shareNoteBtn');
+                    if (shareNoteBtn) {
+                        shareNoteBtn.addEventListener('click', function() {
+                            console.log('Share button clicked');
+                            const shareModal = document.getElementById('shareModal');
+                            if (shareModal) {
+                                // Update share preview if possible
+                                const sharePreviewTitle = document.getElementById('sharePreviewTitle');
+                                const sharePreviewContent = document.getElementById('sharePreviewContent');
+                                const noteTitle = document.getElementById('noteTitleInput');
+                                const noteContent = document.querySelector('.note-content');
+                                
+                                if (sharePreviewTitle && noteTitle) {
+                                    sharePreviewTitle.textContent = noteTitle.value || 'Untitled Note';
+                                }
+                                
+                                if (sharePreviewContent && noteContent) {
+                                    sharePreviewContent.innerHTML = noteContent.innerHTML || 'No content';
+                                }
+                                
+                                // Generate a share link
+                                const shareLink = document.getElementById('shareLink');
+                                if (shareLink) {
+                                    const currentUrl = window.location.href.split('?')[0];
+                                    const shareId = 'note_' + Date.now();
+                                    shareLink.value = `${currentUrl}?share=${shareId}`;
+                                }
+                                
+                                // Show the modal
+                                shareModal.style.display = 'block';
+                            } else {
+                                alert('Share functionality is not available.');
+                            }
+                        });
+                    }
+                    
+                    // Fix Tag button
+                    const tagNoteBtn = document.getElementById('tagNoteBtn');
+                    if (tagNoteBtn) {
+                        tagNoteBtn.addEventListener('click', function() {
+                            console.log('Tag button clicked');
+                            const tagModal = document.getElementById('tagModal');
+                            if (tagModal) {
+                                tagModal.style.display = 'block';
+                            } else {
+                                alert('Tag functionality is not available.');
+                            }
+                        });
+                    }
+                    
+                    // Fix close buttons for modals
+                    const closeButtons = document.querySelectorAll('.close-btn, #closeShareBtn, #cancelTagsBtn, #cancelFolderBtn, #cancelDelete');
+                    closeButtons.forEach(button => {
+                        button.addEventListener('click', function() {
+                            const modal = this.closest('.modal');
+                            if (modal) {
+                                modal.style.display = 'none';
+                            }
+                        });
+                    });
+                    
+                    // Share functionality
+                    const copyShareLinkBtn = document.getElementById('copyShareLinkBtn');
+                    if (copyShareLinkBtn) {
+                        copyShareLinkBtn.addEventListener('click', function() {
+                            const shareLink = document.getElementById('shareLink');
+                            const copyStatus = document.getElementById('copyStatus');
+                            
+                            if (shareLink) {
+                                shareLink.select();
+                                document.execCommand('copy');
+                                
+                                if (copyStatus) {
+                                    copyStatus.style.opacity = '1';
+                                    setTimeout(() => {
+                                        copyStatus.style.opacity = '0';
+                                    }, 2000);
+                                }
+                            }
+                        });
+                    }
+                    
+                    // Share via email
+                    const emailShareBtn = document.getElementById('emailShareBtn');
+                    if (emailShareBtn) {
+                        emailShareBtn.addEventListener('click', function() {
+                            const shareLink = document.getElementById('shareLink');
+                            const noteTitle = document.getElementById('noteTitleInput');
+                            
+                            if (shareLink) {
+                                const title = noteTitle ? noteTitle.value : 'My Note';
+                                const link = shareLink.value;
+                                const mailtoUrl = `mailto:?subject=Check out my note: ${title}&body=I wanted to share this note with you: ${link}`;
+                                window.open(mailtoUrl);
+                            }
+                        });
+                    }
+                    
+                    // Share via WhatsApp
+                    const whatsappShareBtn = document.getElementById('whatsappShareBtn');
+                    if (whatsappShareBtn) {
+                        whatsappShareBtn.addEventListener('click', function() {
+                            const shareLink = document.getElementById('shareLink');
+                            
+                            if (shareLink) {
+                                const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareLink.value)}`;
+                                window.open(whatsappUrl);
+                            }
+                        });
+                    }
+                    
+                    // Share via Twitter
+                    const twitterShareBtn = document.getElementById('twitterShareBtn');
+                    if (twitterShareBtn) {
+                        twitterShareBtn.addEventListener('click', function() {
+                            const shareLink = document.getElementById('shareLink');
+                            const noteTitle = document.getElementById('noteTitleInput');
+                            
+                            if (shareLink) {
+                                const title = noteTitle ? noteTitle.value : 'My Note';
+                                const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out my note: ${title}`)}&url=${encodeURIComponent(shareLink.value)}`;
+                                window.open(twitterUrl);
+                            }
+                        });
+                    }
+                    
+                } catch (err) {
+                    console.error('Error setting up button handlers:', err);
+                }
+                
                 if (!window.notesApp) {
                     console.error('NotesApp not initialized correctly, attempting to initialize manually');
                     try {
@@ -661,28 +831,6 @@
                 // Run the fix again after a delay to make sure it applies
                 setTimeout(fixShareAndTagButtons, 1000);
                 
-                // Add manual event listeners for share and tag buttons if needed
-                if (shareBtn && !window.shareButtonFixed) {
-                    shareBtn.addEventListener('click', function() {
-                        if (window.notesApp && window.notesApp.currentNote) {
-                            window.notesApp.openShareModal();
-                        } else {
-                            alert('Please select a note to share');
-                        }
-                    });
-                    window.shareButtonFixed = true;
-                }
-                
-                if (tagBtn && !window.tagButtonFixed) {
-                    tagBtn.addEventListener('click', function() {
-                        if (window.notesApp && window.notesApp.currentNote) {
-                            window.notesApp.openTagModal();
-                        } else {
-                            alert('Please select a note to tag');
-                        }
-                    });
-                    window.tagButtonFixed = true;
-                }
             }, 1500);
         });
     </script>
