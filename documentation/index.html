@@ -5,303 +5,275 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NotePad - Documentation</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        :root {
+            --sidebar-width: 260px;
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
         .sidebar {
+            width: var(--sidebar-width);
             position: fixed;
             top: 0;
             bottom: 0;
             left: 0;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            width: 260px;
-            overflow-y: auto;
+            z-index: 100;
+            padding: 48px 0 0;
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
         }
         .main-content {
-            margin-left: 280px;
-            padding: 20px;
-            max-width: 900px;
+            margin-left: var(--sidebar-width);
+            padding: 2rem;
         }
-        pre {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 5px;
+        .feature-section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            border-radius: 8px;
+            background: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .screenshot-container {
+            margin: 2rem 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .screenshot-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .feature-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         .nav-link {
+            padding: .5rem 1rem;
             color: #333;
+            transition: all 0.3s ease;
         }
         .nav-link:hover {
-            color: #007bff;
-        }
-        .img-placeholder {
             background-color: #f8f9fa;
-            border: 2px dashed #dee2e6;
-            border-radius: 8px;
-            padding: 30px;
-            text-align: center;
-            margin: 20px 0;
-            color: #6c757d;
+            color: var(--primary-color);
         }
-        .img-placeholder i {
-            font-size: 48px;
-            margin-bottom: 15px;
-            color: #adb5bd;
+        .nav-link.active {
+            color: var(--primary-color);
+            font-weight: 500;
+            background-color: #e9ecef;
         }
-        .screenshot-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            margin: 20px 0;
+        .feature-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        .feature-list li {
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        .feature-list li:before {
+            content: "✓";
+            color: #28a745;
+            position: absolute;
+            left: 0;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            .main-content {
+                margin-left: 0;
+            }
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body>
-    <div class="sidebar bg-light">
-        <h5 class="mb-3">Documentation</h5>
-        <nav class="nav nav-pills flex-column">
-            <a class="nav-link" href="#introduction">Introduction</a>
-            <a class="nav-link" href="#features">Features</a>
-            <a class="nav-link" href="#installation">Installation</a>
-            <a class="nav-link" href="#structure">Project Structure</a>
-            <a class="nav-link" href="#customization">Customization</a>
-            <a class="nav-link" href="#screenshots">Screenshots</a>
-            <a class="nav-link" href="#browser-support">Browser Support</a>
-            <a class="nav-link" href="#changelog">Changelog</a>
-            <a class="nav-link" href="#credits">Credits</a>
-        </nav>
-    </div>
+<body class="bg-light">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+                <div class="position-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#introduction">
+                                <i class="fas fa-home"></i> Introduction
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#core-features">
+                                <i class="fas fa-star"></i> Core Features
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#advanced-features">
+                                <i class="fas fa-rocket"></i> Advanced Features
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#mobile">
+                                <i class="fas fa-mobile-alt"></i> Mobile Features
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#sharing">
+                                <i class="fas fa-share-alt"></i> Sharing
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#customization">
+                                <i class="fas fa-paint-brush"></i> Customization
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
 
-    <div class="main-content">
-        <h1>NotePad Documentation</h1>
-        <p class="lead">A beautiful and functional web-based note-taking application</p>
-
-        <section id="introduction" class="mb-5">
-            <h2>Introduction</h2>
-            <p>NotePad is a modern, responsive web application that provides a clean and intuitive note-taking experience. Built with pure JavaScript, HTML5, and CSS3, it offers a seamless experience across all devices.</p>
-            
-            <div class="img-placeholder">
-                <i class="fas fa-image"></i>
-                <h5>Main Application Screenshot</h5>
-                <p>Place your main application screenshot here</p>
-                <small>Recommended size: 1200x800px</small>
-            </div>
-        </section>
-
-        <section id="features" class="mb-5">
-            <h2>Features</h2>
-            <ul>
-                <li>Clean, modern design</li>
-                <li>Responsive layout for all devices</li>
-                <li>Rich text editing capabilities</li>
-                <li>Local storage for data persistence</li>
-                <li>File import/export functionality</li>
-                <li>Search functionality</li>
-                <li>Collapsible sidebar</li>
-                <li>Text formatting options</li>
-                <li>Notebook-style interface</li>
-                <li>Note sharing capabilities</li>
-                <li>Tagging system</li>
-            </ul>
-            
-            <div class="row mt-4">
-                <div class="col-md-6">
-                    <div class="img-placeholder">
-                        <i class="fas fa-edit"></i>
-                        <h5>Rich Text Editing</h5>
-                        <p>Place your rich text editing screenshot here</p>
+            <!-- Main content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">
+                <!-- Introduction -->
+                <section id="introduction" class="feature-section">
+                    <h1>NotePad Documentation</h1>
+                    <p class="lead">A modern, responsive web application for efficient note-taking and organization.</p>
+                    <div class="screenshot-container">
+                        <img src="assets/images/features/main-index-interface-with example.png" alt="NotePad Main Interface">
+                        <p class="text-muted mt-2">The main interface showing the sidebar, note list, and editor with example content.</p>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="img-placeholder">
-                        <i class="fas fa-folder"></i>
-                        <h5>Folder Management</h5>
-                        <p>Place your folder management screenshot here</p>
+                </section>
+
+                <!-- Core Features -->
+                <section id="core-features" class="feature-section">
+                    <h2><i class="fas fa-star"></i> Core Features</h2>
+                    
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h3><i class="fas fa-pen"></i> Rich Text Editing</h3>
+                            <img src="assets/images/features/rich-text-editing.png" alt="Rich Text Editor" class="img-fluid mb-3">
+                            <ul class="feature-list">
+                                <li>Format text (bold, italic, underline)</li>
+                                <li>Multiple heading levels</li>
+                                <li>Lists and checkboxes</li>
+                                <li>Real-time autosave</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <h3><i class="fas fa-folder"></i> Note Management</h3>
+                            <img src="assets/images/features/folder-management.png" alt="Folder Management" class="img-fluid mb-3">
+                            <ul class="feature-list">
+                                <li>Create unlimited folders</li>
+                                <li>Drag and drop notes</li>
+                                <li>Export folder contents</li>
+                                <li>Bulk operations</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <h3><i class="fas fa-search"></i> Smart Search</h3>
+                            <img src="assets/images/features/search-feature.png" alt="Search Feature" class="img-fluid mb-3">
+                            <ul class="feature-list">
+                                <li>Real-time search results</li>
+                                <li>Search in titles and content</li>
+                                <li>Advanced filtering options</li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-            </div>
-            
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="img-placeholder">
-                        <i class="fas fa-share-alt"></i>
-                        <h5>Note Sharing</h5>
-                        <p>Place your note sharing screenshot here</p>
+                </section>
+
+                <!-- Advanced Features -->
+                <section id="advanced-features" class="feature-section">
+                    <h2><i class="fas fa-rocket"></i> Advanced Features</h2>
+                    
+                    <div class="mb-5">
+                        <h3>Tag Management</h3>
+                        <img src="assets/images/features/manage-tags-view.png" alt="Tag Management" class="img-fluid rounded shadow-sm">
+                        <ul class="feature-list mt-3">
+                            <li>Create and manage tags</li>
+                            <li>Tag-based organization</li>
+                            <li>Smart tag suggestions</li>
+                            <li>Bulk tag operations</li>
+                        </ul>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="img-placeholder">
-                        <i class="fas fa-tags"></i>
-                        <h5>Tagging System</h5>
-                        <p>Place your tagging system screenshot here</p>
+
+                    <div class="mb-5">
+                        <h3>Safe Delete Operations</h3>
+                        <img src="assets/images/features/delete-view.png" alt="Delete Operations" class="img-fluid rounded shadow-sm">
+                        <ul class="feature-list mt-3">
+                            <li>Confirmation dialogs</li>
+                            <li>Batch delete support</li>
+                            <li>Recover deleted notes</li>
+                            <li>Permanent deletion option</li>
+                        </ul>
                     </div>
-                </div>
-            </div>
-        </section>
+                </section>
 
-        <section id="installation" class="mb-5">
-            <h2>Installation</h2>
-            <p>The application is built with vanilla JavaScript and doesn't require any build tools or dependencies. Simply follow these steps:</p>
-            <ol>
-                <li>Extract the downloaded zip file</li>
-                <li>Open index.html in your web browser</li>
-                <li>Start creating notes!</li>
-            </ol>
-            
-            <div class="img-placeholder">
-                <i class="fas fa-rocket"></i>
-                <h5>Getting Started</h5>
-                <p>Place your getting started screenshot here</p>
-            </div>
-        </section>
+                <!-- Sharing Features -->
+                <section id="sharing" class="feature-section">
+                    <h2><i class="fas fa-share-alt"></i> Sharing Features</h2>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <h3>Share Interface</h3>
+                            <img src="assets/images/features/share-view.png" alt="Share Interface" class="img-fluid rounded shadow-sm">
+                            <ul class="feature-list mt-3">
+                                <li>Multiple sharing options</li>
+                                <li>Social media integration</li>
+                                <li>Email sharing</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="col-md-6 mb-4">
+                            <h3>Link Sharing</h3>
+                            <img src="assets/images/features/Link-view.png" alt="Link Sharing" class="img-fluid rounded shadow-sm">
+                            <ul class="feature-list mt-3">
+                                <li>Generate shareable links</li>
+                                <li>Link management</li>
+                                <li>Access control</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
 
-        <section id="structure" class="mb-5">
-            <h2>Project Structure</h2>
-            <pre>
-notepad/
-├── index.html          # Main application file
-├── styles.css          # Stylesheet
-├── script.js           # JavaScript functionality
-├── js/
-│   ├── fileOperations.js  # File handling operations
-│   ├── mobileApp.js       # Mobile-specific functionality
-│   └── noteOperations.js  # Note CRUD operations
-├── documentation/      # Documentation files
-└── README.md          # Project readme
-            </pre>
-        </section>
-
-        <section id="customization" class="mb-5">
-            <h2>Customization</h2>
-            <h4>Colors</h4>
-            <p>The main colors can be customized in the styles.css file:</p>
-            <pre>
-/* Main colors */
-.main-content {
-    background-color: #fffef0; /* Background color */
-}
-
-.main-content::before {
-    background-image: linear-gradient(#e5e5dd 1px, transparent 1px); /* Grid lines */
-}
-            </pre>
-
-            <h4>Layout</h4>
-            <p>The sidebar width and main content layout can be adjusted in styles.css:</p>
-            <pre>
-.sidebar {
-    width: 300px; /* Sidebar width */
-}
-
-.note-editor {
-    padding: 20px 40px; /* Content padding */
-}
-            </pre>
-            
-            <div class="img-placeholder">
-                <i class="fas fa-paint-brush"></i>
-                <h5>Customization Example</h5>
-                <p>Place a screenshot showing customization options here</p>
-            </div>
-        </section>
-        
-        <section id="screenshots" class="mb-5">
-            <h2>Screenshots</h2>
-            <h4>Desktop Views</h4>
-            
-            <div class="screenshot-grid">
-                <div class="img-placeholder">
-                    <i class="fas fa-desktop"></i>
-                    <h5>Main View</h5>
-                    <p>main-view-desktop.png</p>
-                </div>
-                <div class="img-placeholder">
-                    <i class="fas fa-desktop"></i>
-                    <h5>Note Editing</h5>
-                    <p>note-editing-desktop.png</p>
-                </div>
-                <div class="img-placeholder">
-                    <i class="fas fa-desktop"></i>
-                    <h5>Search Functionality</h5>
-                    <p>search-desktop.png</p>
-                </div>
-                <div class="img-placeholder">
-                    <i class="fas fa-desktop"></i>
-                    <h5>Share Modal</h5>
-                    <p>share-modal-desktop.png</p>
-                </div>
-            </div>
-            
-            <h4>Mobile Views</h4>
-            
-            <div class="screenshot-grid">
-                <div class="img-placeholder">
-                    <i class="fas fa-mobile-alt"></i>
-                    <h5>Mobile List View</h5>
-                    <p>note-list-mobile.png</p>
-                </div>
-                <div class="img-placeholder">
-                    <i class="fas fa-mobile-alt"></i>
-                    <h5>Mobile Editing</h5>
-                    <p>note-editing-mobile.png</p>
-                </div>
-                <div class="img-placeholder">
-                    <i class="fas fa-mobile-alt"></i>
-                    <h5>Mobile Floating Actions</h5>
-                    <p>floating-actions-mobile.png</p>
-                </div>
-                <div class="img-placeholder">
-                    <i class="fas fa-mobile-alt"></i>
-                    <h5>Tag Management</h5>
-                    <p>tag-management-mobile.png</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="browser-support" class="mb-5">
-            <h2>Browser Support</h2>
-            <ul>
-                <li>Chrome (latest)</li>
-                <li>Firefox (latest)</li>
-                <li>Safari (latest)</li>
-                <li>Edge (latest)</li>
-                <li>Opera (latest)</li>
-            </ul>
-            
-            <div class="img-placeholder">
-                <i class="fas fa-globe"></i>
-                <h5>Cross-Browser Compatibility</h5>
-                <p>Place a screenshot showing the app in different browsers</p>
-            </div>
-        </section>
-
-        <section id="changelog" class="mb-5">
-            <h2>Changelog</h2>
-            <h4>Version 1.2.0 - April 2024</h4>
-            <ul>
-                <li>Added note sharing capabilities</li>
-                <li>Implemented tagging system</li>
-                <li>Enhanced mobile experience with floating action buttons</li>
-                <li>Fixed service worker caching issues</li>
-                <li>Improved UI/UX for modals and dialogs</li>
-            </ul>
-            
-            <h4>Version 1.0.0 - Initial Release</h4>
-            <ul>
-                <li>Initial release with core functionality</li>
-                <li>Modern design implementation</li>
-                <li>Rich text editing features</li>
-                <li>Local storage integration</li>
-            </ul>
-        </section>
-
-        <section id="credits" class="mb-5">
-            <h2>Credits</h2>
-            <ul>
-                <li>Font Awesome - Icons</li>
-                <li>Google Fonts - Typography</li>
-                <li>Bootstrap - Documentation styling</li>
-            </ul>
-        </section>
+                <!-- Mobile Features -->
+                <section id="mobile" class="feature-section">
+                    <h2><i class="fas fa-mobile-alt"></i> Mobile Experience</h2>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3>Advanced Mobile View</h3>
+                            <img src="assets/images/features/mobile-advanced-view.png" alt="Advanced Mobile Interface" class="img-fluid rounded shadow-sm">
+                            <ul class="feature-list mt-3">
+                                <li>Optimized mobile layout</li>
+                                <li>Touch-friendly controls</li>
+                                <li>Gesture support</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h3>Mobile Notes View</h3>
+                            <img src="assets/images/features/mobile-all-notes.png" alt="Mobile Notes View" class="img-fluid rounded shadow-sm">
+                            <ul class="feature-list mt-3">
+                                <li>Quick note access</li>
+                                <li>Floating action buttons</li>
+                                <li>Offline capabilities</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

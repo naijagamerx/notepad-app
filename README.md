@@ -2,32 +2,89 @@
 
 A beautiful and functional web-based note-taking application built with vanilla JavaScript, HTML5, and CSS3. NotePad provides an intuitive and responsive interface for managing your notes, with features like rich text editing, note sharing, and tagging.
 
-## 🌟 Features
+![Main Interface](documentation/assets/images/features/main-index-interface-with%20example.png)
 
-- **Clean, Modern Design**: Intuitive interface with responsive layout
-- **Rich Text Editing**: Full formatting capabilities with toolbar
-- **Note Organization**: 
-  - Folder management
-  - Tagging system
-  - Search functionality
-- **File Operations**: 
-  - Import/Export notes
-  - Support for multiple file formats (.txt, .md, .doc, .docx)
-- **Note Sharing**: 
-  - Generate shareable links
-  - Share via email, WhatsApp, and Twitter
-  - Preview shared content
-- **Mobile Optimized**: 
-  - Responsive design
-  - Touch-friendly interface
-  - Floating action buttons
-- **Data Persistence**: Local storage integration with auto-save
+## ✨ Key Features
+
+### 📝 Rich Text Editing
+Powerful text editing capabilities with an intuitive interface.
+
+![Rich Text Editor](documentation/assets/images/features/rich-text-editing.png)
+
+- Format text (bold, italic, underline)
+- Multiple heading levels
+- Lists and checkboxes
+- Code blocks
+- Quote blocks
+- Image insertion
+- Real-time autosave
+
+### 📁 Advanced Note Management
+Comprehensive tools for organizing your notes efficiently.
+
+![Folder Management](documentation/assets/images/features/folder-management.png)
+
+- Create unlimited folders
+- Drag and drop notes
+- Rename and delete folders
+- Note count per folder
+- Export folder contents
+- Bulk operations
+
+### 🔍 Smart Search & Tags
+Find and organize your notes instantly with our powerful search and tagging system.
+
+![Search Feature](documentation/assets/images/features/search-feature.png)
+![Tag Management](documentation/assets/images/features/manage-tags-view.png)
+
+- Real-time search results
+- Search in titles and content
+- Tag-based filtering
+- Tag management interface
+- Multiple tag support
+- Tag suggestions
+
+### 🔗 Advanced Sharing
+Share your notes easily with multiple options.
+
+![Share Interface](documentation/assets/images/features/share-view.png)
+![Link Sharing](documentation/assets/images/features/Link-view.png)
+
+- Generate shareable links
+- Social media sharing
+- Email integration
+- Link management
+- Share history
+- Access control
+
+### 🗑️ Safe Delete Operations
+Secure note deletion with confirmation.
+
+![Delete Operation](documentation/assets/images/features/delete-view.png)
+
+- Confirmation dialogs
+- Batch delete support
+- Recover deleted notes
+- Permanent deletion option
+
+### 📱 Mobile Experience
+Fully optimized for mobile devices with special features.
+
+![Mobile Interface](documentation/assets/images/features/mobile-advanced-view.png)
+![Mobile Notes](documentation/assets/images/features/mobile-all-notes.png)
+
+- Responsive layout
+- Touch-friendly interface
+- Floating action buttons
+- Mobile-specific optimizations
+- Gesture support
+- Offline access
 
 ## 🚀 Quick Start
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/[username]/notepad-app.git
+   git clone https://github.com/naijagamerx/notepad-app.git
    ```
 
 2. Open `index.html` in your web browser
@@ -47,31 +104,38 @@ A beautiful and functional web-based note-taking application built with vanilla 
 ```
 notepad/
 ├── index.html          # Main application file
-├── styles.css         # Stylesheet
-├── script.js         # JavaScript functionality
-├── js/
-│   ├── fileOperations.js  # File handling operations
-│   ├── mobileApp.js       # Mobile-specific functionality
-│   └── noteOperations.js  # Note CRUD operations
-├── documentation/    # Documentation files
-└── README.md        # Project readme
+├── css/               # Stylesheets
+│   ├── style.css     # Core styles
+│   ├── mobile.css    # Mobile-specific styles
+│   └── themes.css    # Theme customization
+├── js/               # JavaScript modules
+│   ├── core/        # Core functionality
+│   ├── features/    # Feature implementations
+│   └── utils/       # Utility functions
+├── assets/          # Static resources
+├── documentation/   # Detailed documentation
+└── README.md       # Project overview
 ```
 
-## 📱 Mobile Experience
+## 📱 Mobile Features
 
-- Optimized layouts for different device orientations
-- Enhanced touch targets for better usability
-- Floating action buttons for common actions
+- Optimized layouts for all devices
+- Enhanced touch targets
+- Floating action buttons
 - Improved scroll handling
-- Mobile-friendly modals and interfaces
+- Mobile-friendly modals
+- Offline capability
+- Push notifications
 
 ## 🔄 Recent Updates (April 2024)
 
 - Added comprehensive note sharing system
-- Implemented tag management and filtering
-- Enhanced mobile experience with floating action buttons
-- Improved UI/UX with modern modal designs
-- Fixed various mobile display issues
+- Implemented advanced tag management
+- Enhanced mobile experience
+- Improved UI/UX with modern designs
+- Added link sharing capabilities
+- Implemented safe delete operations
+- Added offline support
 
 ## 📄 License
 
@@ -89,7 +153,7 @@ Contributions, issues, and feature requests are welcome! Feel free to check [iss
 
 ## 📞 Contact
 
-If you have any questions or feedback, please reach out to us through the [issues page](../../issues).
+If you have any questions or feedback, please reach out through the [issues page](../../issues).
 
 ---
 Made with ❤️ for note-taking enthusiasts
