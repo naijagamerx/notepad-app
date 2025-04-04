@@ -10,21 +10,21 @@
     <meta name="format-detection" content="telephone=no">
     
     <!-- Favicon and App Icons -->
-    <link rel="icon" type="image/png" sizes="32x32" href="images/icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="images/icon-192x192.png">
-    <link rel="apple-touch-icon" href="images/icon-192x192.png">
-    <link rel="mask-icon" href="images/icon-192x192.png" color="#007AFF">
-    <meta name="msapplication-TileImage" content="images/icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./images/icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./images/icon-192x192.png">
+    <link rel="apple-touch-icon" href="./images/icon-192x192.png">
+    <link rel="mask-icon" href="./images/icon-192x192.png" color="#007AFF">
+    <meta name="msapplication-TileImage" content="./images/icon-192x192.png">
     <meta name="msapplication-TileColor" content="#007AFF">
     
     <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="./manifest.json">
     
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/fileOperations.css">
-    <link rel="stylesheet" href="css/mobile.css">
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/fileOperations.css">
+    <link rel="stylesheet" href="./css/mobile.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
     
     <title>NotePad - Modern Note Taking App</title>
@@ -105,6 +105,151 @@
             .fa, .fas, .far, .fab {
                 display: inline-block !important;
             }
+        }
+        
+        /* Critical CSS for toolbar - ensures styling regardless of CSS file loading */
+        .format-toolbar {
+            display: flex;
+            gap: 5px;
+            padding: 5px;
+            background-color: #f8f8f8;
+            border-radius: 5px;
+            flex-wrap: wrap;
+        }
+        
+        .format-toolbar button {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #333;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .format-toolbar button i {
+            font-size: 16px;
+            display: inline-block !important;
+        }
+        
+        .format-toolbar button.active {
+            background-color: #e6f7ff;
+            border-color: #1890ff;
+            color: #1890ff;
+        }
+        
+        .format-toolbar button:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .format-divider {
+            width: 1px;
+            height: 20px;
+            background-color: #e0e0e0;
+            margin: 0 5px;
+        }
+        
+        /* Modal and share button styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            overflow: auto;
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: modalFadeIn 0.3s;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .modal-body {
+            padding: 20px 0;
+        }
+        
+        .modal-footer {
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+        
+        .close-btn:hover {
+            color: #666;
+        }
+        
+        /* Share options grid */
+        .share-options-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .share-option-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .share-option-btn i {
+            font-size: 24px;
+            margin-bottom: 8px;
+            display: inline-block !important;
+        }
+        
+        .share-option-btn.email {
+            background-color: #f2f2f7;
+            color: #007AFF;
+        }
+        
+        .share-option-btn.whatsapp {
+            background-color: #e9ffef;
+            color: #25D366;
+        }
+        
+        .share-option-btn.twitter {
+            background-color: #e8f5fd;
+            color: #1DA1F2;
+        }
+        
+        .share-option-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
@@ -376,64 +521,96 @@
     </div>
 
     <!-- Scripts -->
-    <script src="js/noteOperations.js"></script>
-    <script src="js/fileOperations.js"></script>
-    <script src="script.js"></script>
-    <script src="js/mobileApp.js"></script>
+    <script src="./js/noteOperations.js"></script>
+    <script src="./js/fileOperations.js"></script>
+    <script src="./script.js"></script>
+    <script src="./js/mobileApp.js"></script>
     <script>
         // Verify resources loaded correctly
         document.addEventListener('DOMContentLoaded', function() {
-            // Check for FontAwesome
-            const fontAwesomeLoaded = (function() {
-                const span = document.createElement('span');
-                span.className = 'fa';
-                span.style.display = 'none';
-                document.body.insertBefore(span, document.body.firstChild);
-                const result = window.getComputedStyle(span, null).fontFamily.includes('FontAwesome');
-                document.body.removeChild(span);
-                return result;
-            })();
-            
-            if (!fontAwesomeLoaded) {
-                console.error('FontAwesome not loaded correctly');
-                // Attempt to reload FontAwesome
-                const link = document.createElement('link');
-                link.rel = 'stylesheet';
-                link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
-                link.integrity = 'sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==';
-                link.crossOrigin = 'anonymous';
-                link.referrerPolicy = 'no-referrer';
-                document.head.appendChild(link);
-            }
-            
-            // Check for required JavaScript files
-            const requiredScripts = ['noteOperations.js', 'fileOperations.js', 'script.js', 'mobileApp.js'];
-            const loadedScripts = Array.from(document.scripts).map(script => {
-                const src = script.src;
-                return src.substring(src.lastIndexOf('/') + 1);
-            });
-            
-            requiredScripts.forEach(script => {
-                if (!loadedScripts.some(s => s.includes(script))) {
-                    console.error(`Required script ${script} not loaded correctly`);
-                    // Attempt to reload the script
-                    const scriptEl = document.createElement('script');
-                    if (script === 'script.js') {
-                        scriptEl.src = script;
-                    } else {
-                        scriptEl.src = `js/${script}`;
-                    }
-                    document.body.appendChild(scriptEl);
+            // Handle potential path issues by dynamically checking and reloading if needed
+            const checkAndFixPaths = function() {
+                const basePath = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+                console.log('Base path detected:', basePath);
+                
+                // Check for FontAwesome
+                const fontAwesomeLoaded = (function() {
+                    const span = document.createElement('span');
+                    span.className = 'fa';
+                    span.style.display = 'none';
+                    document.body.insertBefore(span, document.body.firstChild);
+                    const result = window.getComputedStyle(span, null).fontFamily.includes('FontAwesome');
+                    document.body.removeChild(span);
+                    return result;
+                })();
+                
+                if (!fontAwesomeLoaded) {
+                    console.error('FontAwesome not loaded correctly');
+                    // Attempt to reload FontAwesome
+                    const link = document.createElement('link');
+                    link.rel = 'stylesheet';
+                    link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
+                    link.integrity = 'sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==';
+                    link.crossOrigin = 'anonymous';
+                    link.referrerPolicy = 'no-referrer';
+                    document.head.appendChild(link);
                 }
-            });
+                
+                // Check for required JavaScript files with both relative and absolute paths
+                const scriptNames = ['noteOperations.js', 'fileOperations.js', 'script.js', 'mobileApp.js'];
+                
+                scriptNames.forEach(scriptName => {
+                    const scriptLoadedInRelativePath = Array.from(document.scripts).some(s => 
+                        s.src.includes('/' + scriptName) || s.src.includes('./' + scriptName)
+                    );
+                    
+                    if (!scriptLoadedInRelativePath) {
+                        console.warn(`Script ${scriptName} may not be loading correctly. Attempting to reload.`);
+                        
+                        // Attempt to reload with different paths
+                        const scriptEl = document.createElement('script');
+                        
+                        // Try different path combinations
+                        if (scriptName === 'script.js') {
+                            scriptEl.src = './script.js';
+                        } else {
+                            scriptEl.src = './js/' + scriptName;
+                        }
+                        
+                        // Add error handler to try absolute path if relative path fails
+                        scriptEl.onerror = function() {
+                            console.warn(`Failed to load ${scriptEl.src}, trying absolute path`);
+                            const absoluteScript = document.createElement('script');
+                            if (scriptName === 'script.js') {
+                                absoluteScript.src = basePath + 'script.js';
+                            } else {
+                                absoluteScript.src = basePath + 'js/' + scriptName;
+                            }
+                            document.body.appendChild(absoluteScript);
+                        };
+                        
+                        document.body.appendChild(scriptEl);
+                    }
+                });
+            };
+            
+            // Run the path check immediately
+            checkAndFixPaths();
+            
+            // Run again after a delay to catch any issues
+            setTimeout(checkAndFixPaths, 1000);
             
             // Check if NotesApp initialized correctly
             setTimeout(function() {
                 if (!window.notesApp) {
-                    console.error('NotesApp not initialized correctly');
-                    // Attempt to initialize manually
+                    console.error('NotesApp not initialized correctly, attempting to initialize manually');
                     try {
                         window.notesApp = new NotesApp();
+                        
+                        // Track initialization state
+                        window.isAppInitialized = true;
+                        
+                        console.log('Manual initialization of NotesApp succeeded');
                     } catch (e) {
                         console.error('Failed to initialize NotesApp:', e);
                     }
@@ -447,31 +624,73 @@
                     if (shareBtn) {
                         shareBtn.style.display = 'inline-flex';
                         shareBtn.style.alignItems = 'center';
+                        shareBtn.style.backgroundColor = '#f0f0f0';
+                        shareBtn.style.color = '#007AFF';
+                        shareBtn.style.padding = '8px 12px';
+                        shareBtn.style.borderRadius = '8px';
+                        shareBtn.style.cursor = 'pointer';
                         
                         const icon = shareBtn.querySelector('i');
-                        if (icon) icon.style.display = 'inline-block';
+                        if (icon) {
+                            icon.style.display = 'inline-block';
+                            icon.style.color = '#007AFF';
+                            icon.style.marginRight = '4px';
+                        }
                     }
                     
                     if (tagBtn) {
                         tagBtn.style.display = 'inline-flex';
                         tagBtn.style.alignItems = 'center';
+                        tagBtn.style.backgroundColor = '#f0f0f0';
+                        tagBtn.style.color = '#007AFF';
+                        tagBtn.style.padding = '8px 12px';
+                        tagBtn.style.borderRadius = '8px';
+                        tagBtn.style.cursor = 'pointer';
                         
                         const icon = tagBtn.querySelector('i');
-                        if (icon) icon.style.display = 'inline-block';
+                        if (icon) {
+                            icon.style.display = 'inline-block';
+                            icon.style.color = '#007AFF';
+                            icon.style.marginRight = '4px';
+                        }
                     }
                 };
                 
                 fixShareAndTagButtons();
+                
                 // Run the fix again after a delay to make sure it applies
                 setTimeout(fixShareAndTagButtons, 1000);
-            }, 500);
+                
+                // Add manual event listeners for share and tag buttons if needed
+                if (shareBtn && !window.shareButtonFixed) {
+                    shareBtn.addEventListener('click', function() {
+                        if (window.notesApp && window.notesApp.currentNote) {
+                            window.notesApp.openShareModal();
+                        } else {
+                            alert('Please select a note to share');
+                        }
+                    });
+                    window.shareButtonFixed = true;
+                }
+                
+                if (tagBtn && !window.tagButtonFixed) {
+                    tagBtn.addEventListener('click', function() {
+                        if (window.notesApp && window.notesApp.currentNote) {
+                            window.notesApp.openTagModal();
+                        } else {
+                            alert('Please select a note to tag');
+                        }
+                    });
+                    window.tagButtonFixed = true;
+                }
+            }, 1500);
         });
     </script>
     <script>
         // Register service worker for PWA
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('service-worker.js')
+                navigator.serviceWorker.register('./service-worker.js')
                     .then(registration => {
                         console.log('Service Worker registered with scope:', registration.scope);
                     })
