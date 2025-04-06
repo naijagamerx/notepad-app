@@ -1561,5 +1561,74 @@
             });
         }
     </script>
+    <script>
+        // Load saved folders from localStorage on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load folders from localStorage
+            try {
+                const savedFolders = JSON.parse(localStorage.getItem('folders') || '[]');
+                if (savedFolders && savedFolders.length > 0) {
+                    console.log('Loading saved folders:', savedFolders);
+                    
+                    const foldersList = document.getElementById('foldersList');
+                    if (foldersList) {
+                        // First clear any default folders
+                        foldersList.innerHTML = '';
+                        
+                        // Then add saved folders
+                        savedFolders.forEach(folder => {
+                            const newFolder = document.createElement('div');
+                            newFolder.className = 'folder-item';
+                            newFolder.dataset.folderId = folder.id;
+                            newFolder.innerHTML = `
+                                <i class="fas fa-folder"></i>
+                                <span class="folder-name">${folder.name}</span>
+                                <span class="folder-count">${folder.notes ? folder.notes.length : 0}</span>
+                                <div class="folder-actions">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </div>
+                            `;
+                            foldersList.appendChild(newFolder);
+                            
+                            // Style the folder
+                            Object.assign(newFolder.style, {
+                                display: 'flex',
+                                alignItems: 'center',
+                                padding: '10px 15px',
+                                borderRadius: '8px',
+                                marginBottom: '5px',
+                                backgroundColor: '#f0f0f0',
+                                cursor: 'pointer'
+                            });
+                            
+                            // Add click handler to select folder
+                            newFolder.addEventListener('click', function(e) {
+                                // Only handle clicks on the folder itself, not on the actions
+                                if (!e.target.closest('.folder-actions')) {
+                                    // Remove active class from all folders
+                                    document.querySelectorAll('.folder-item').forEach(item => {
+                                        item.classList.remove('active');
+                                        item.style.backgroundColor = '#f0f0f0';
+                                    });
+                                    
+                                    // Add active class to this folder
+                                    this.classList.add('active');
+                                    this.style.backgroundColor = '#e0e0e0';
+                                    
+                                    // Update the notes list based on this folder
+                                    // (This would typically filter notes by folder)
+                                    console.log('Selected folder:', this.dataset.folderId);
+                                }
+                            });
+                        });
+                        
+                        console.log('Folders loaded from localStorage');
+                    }
+                }
+            } catch (err) {
+                console.error('Error loading folders from localStorage:', err);
+            }
+        });
+    </script>
 </body>
 </html>
