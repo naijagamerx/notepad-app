@@ -1631,254 +1631,143 @@
         });
     </script>
     <script>
-        // Verify resources loaded correctly
-        document.addEventListener('DOMContentLoaded', function() {
-            // Fix mobile formatting toolbar
-            const mobileFormatBtns = {
-                bold: document.getElementById('boldBtn'),
-                italic: document.getElementById('italicBtn'),
-                underline: document.getElementById('underlineBtn'),
-                strike: document.getElementById('strikeBtn'),
-                heading: document.getElementById('headingBtn'),
-                quote: document.getElementById('quoteBtn'),
-                code: document.getElementById('codeBtn'),
-                list: document.getElementById('listBtn')
-            };
-
-            // Style the mobile formatting buttons
-            Object.values(mobileFormatBtns).forEach(btn => {
-                if (btn) {
-                    Object.assign(btn.style, {
-                        backgroundColor: '#ffffff',
-                        border: '1px solid #e0e0e0',
-                        borderRadius: '4px',
-                        padding: '8px 12px',
-                        cursor: 'pointer',
-                        fontSize: '14px',
-                        color: '#333',
-                        display: 'inline-flex',
+        // Add this function to make mobile formatting options work
+        function initializeMobileFormatting() {
+            console.log('Initializing mobile formatting options');
+            
+            // Mobile formatting buttons
+            const boldBtn = document.getElementById('boldBtn');
+            const italicBtn = document.getElementById('italicBtn');
+            const underlineBtn = document.getElementById('underlineBtn');
+            const strikeBtn = document.getElementById('strikeBtn');
+            const headingBtn = document.getElementById('headingBtn');
+            const quoteBtn = document.getElementById('quoteBtn');
+            const codeBtn = document.getElementById('codeBtn');
+            const listBtn = document.getElementById('listBtn');
+            
+            const noteContent = document.querySelector('.note-content');
+            
+            if (noteContent) {
+                // Helper function to execute formatting commands
+                function formatText(command, value = null) {
+                    console.log('Formatting:', command, value);
+                    document.execCommand(command, false, value);
+                    noteContent.focus();
+                }
+                
+                // Add event listeners to formatting buttons
+                if (boldBtn) boldBtn.addEventListener('click', function() { formatText('bold'); });
+                if (italicBtn) italicBtn.addEventListener('click', function() { formatText('italic'); });
+                if (underlineBtn) underlineBtn.addEventListener('click', function() { formatText('underline'); });
+                if (strikeBtn) strikeBtn.addEventListener('click', function() { formatText('strikeThrough'); });
+                
+                // Handle heading insertion
+                if (headingBtn) {
+                    headingBtn.addEventListener('click', function() {
+                        const selection = window.getSelection();
+                        if (selection.rangeCount) {
+                            const range = selection.getRangeAt(0);
+                            const selectedText = range.toString();
+                            
+                            if (selectedText) {
+                                // Replace selection with heading
+                                const heading = document.createElement('h2');
+                                heading.textContent = selectedText;
+                                range.deleteContents();
+                                range.insertNode(heading);
+                            } else {
+                                // Insert new heading
+                                formatText('formatBlock', '<h2>');
+                            }
+                        } else {
+                            formatText('formatBlock', '<h2>');
+                        }
+                    });
+                }
+                
+                // Handle quote insertion
+                if (quoteBtn) {
+                    quoteBtn.addEventListener('click', function() {
+                        formatText('formatBlock', '<blockquote>');
+                    });
+                }
+                
+                // Handle code insertion
+                if (codeBtn) {
+                    codeBtn.addEventListener('click', function() {
+                        const selection = window.getSelection();
+                        if (selection.rangeCount) {
+                            const range = selection.getRangeAt(0);
+                            const selectedText = range.toString();
+                            
+                            if (selectedText) {
+                                // Replace selection with code
+                                const code = document.createElement('code');
+                                code.textContent = selectedText;
+                                range.deleteContents();
+                                range.insertNode(code);
+                            } else {
+                                // Insert new code block
+                                const code = document.createElement('pre');
+                                code.innerHTML = '<code>// Your code here</code>';
+                                range.insertNode(code);
+                            }
+                        } else {
+                            const code = document.createElement('pre');
+                            code.innerHTML = '<code>// Your code here</code>';
+                            noteContent.appendChild(code);
+                        }
+                        noteContent.focus();
+                    });
+                }
+                
+                // Handle list insertion
+                if (listBtn) {
+                    listBtn.addEventListener('click', function() {
+                        formatText('insertUnorderedList');
+                    });
+                }
+                
+                // Style the buttons to ensure they're visible
+                const formatButtons = document.querySelectorAll('.format-buttons button');
+                formatButtons.forEach(button => {
+                    Object.assign(button.style, {
+                        width: '100%',
+                        height: '44px',
+                        borderRadius: '10px',
+                        backgroundColor: 'white',
+                        border: '1px solid #e0e0e5',
+                        display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        margin: '5px',
-                        minWidth: '36px',
-                        height: '36px'
+                        color: '#333',
+                        fontSize: '18px',
+                        boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)'
                     });
-
-                    const icon = btn.querySelector('i');
+                    
+                    const icon = button.querySelector('i');
                     if (icon) {
-                        Object.assign(icon.style, {
-                            fontSize: '16px',
-                            display: 'inline-block'
-                        });
+                        icon.style.display = 'inline-block';
+                        icon.style.fontSize = '16px';
                     }
-                }
-            });
-
-            // Style the mobile details element
-            const mobileFormatDetails = document.querySelector('details.mobile-only');
-            if (mobileFormatDetails) {
-                Object.assign(mobileFormatDetails.style, {
-                    margin: '10px 0',
-                    padding: '5px',
-                    border: '1px solid #e0e0e0',
-                    borderRadius: '5px'
                 });
-
-                const summary = mobileFormatDetails.querySelector('summary');
-                if (summary) {
-                    Object.assign(summary.style, {
-                        padding: '8px',
-                        cursor: 'pointer',
-                        fontWeight: 'bold',
-                        backgroundColor: '#f8f8f8',
-                        borderRadius: '4px'
-                    });
-                }
-
-                const formatButtons = mobileFormatDetails.querySelector('.format-buttons');
-                if (formatButtons) {
-                    Object.assign(formatButtons.style, {
-                        display: 'flex',
-                        flexWrap: 'wrap',
-                        padding: '10px 5px',
-                        gap: '8px'
+                
+                // Ensure the format buttons container is properly styled
+                const formatButtonsContainer = document.querySelector('.format-buttons');
+                if (formatButtonsContainer) {
+                    Object.assign(formatButtonsContainer.style, {
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(4, 1fr)',
+                        gap: '12px',
+                        padding: '16px',
+                        backgroundColor: '#f5f5f7'
                     });
                 }
             }
-
-            // Add functionality to mobile formatting buttons
-            if (mobileFormatBtns.bold) {
-                mobileFormatBtns.bold.addEventListener('click', function() {
-                    document.execCommand('bold', false, null);
-                    document.querySelector('.note-content').focus();
-                });
-            }
-
-            if (mobileFormatBtns.italic) {
-                mobileFormatBtns.italic.addEventListener('click', function() {
-                    document.execCommand('italic', false, null);
-                    document.querySelector('.note-content').focus();
-                });
-            }
-
-            if (mobileFormatBtns.underline) {
-                mobileFormatBtns.underline.addEventListener('click', function() {
-                    document.execCommand('underline', false, null);
-                    document.querySelector('.note-content').focus();
-                });
-            }
-
-            if (mobileFormatBtns.strike) {
-                mobileFormatBtns.strike.addEventListener('click', function() {
-                    document.execCommand('strikeThrough', false, null);
-                    document.querySelector('.note-content').focus();
-                });
-            }
-
-            if (mobileFormatBtns.heading) {
-                mobileFormatBtns.heading.addEventListener('click', function() {
-                    const selection = window.getSelection();
-                    if (selection.rangeCount) {
-                        const range = selection.getRangeAt(0);
-                        const parentNode = range.commonAncestorContainer.parentNode;
-                        
-                        if (parentNode.nodeName === 'H1' || parentNode.nodeName === 'H2' || 
-                            parentNode.nodeName === 'H3' || parentNode.nodeName === 'H4') {
-                            document.execCommand('formatBlock', false, 'p');
-                        } else {
-                            document.execCommand('formatBlock', false, 'h2');
-                        }
-                    } else {
-                        document.execCommand('formatBlock', false, 'h2');
-                    }
-                    document.querySelector('.note-content').focus();
-                });
-            }
-
-            if (mobileFormatBtns.quote) {
-                mobileFormatBtns.quote.addEventListener('click', function() {
-                    document.execCommand('formatBlock', false, 'blockquote');
-                    document.querySelector('.note-content').focus();
-                });
-            }
-
-            if (mobileFormatBtns.code) {
-                mobileFormatBtns.code.addEventListener('click', function() {
-                    const selection = window.getSelection();
-                    if (selection.rangeCount) {
-                        const range = selection.getRangeAt(0);
-                        const parentNode = range.commonAncestorContainer.parentNode;
-                        
-                        if (parentNode.nodeName === 'CODE') {
-                            document.execCommand('formatBlock', false, 'p');
-                        } else {
-                            const text = document.getSelection().toString();
-                            if (text) {
-                                document.execCommand('insertHTML', false, '<code>' + text + '</code>');
-                            } else {
-                                document.execCommand('formatBlock', false, 'pre');
-                            }
-                        }
-                    }
-                    document.querySelector('.note-content').focus();
-                });
-            }
-
-            if (mobileFormatBtns.list) {
-                mobileFormatBtns.list.addEventListener('click', function() {
-                    document.execCommand('insertUnorderedList', false, null);
-                    document.querySelector('.note-content').focus();
-                });
-            }
-
-            // Style the mobile formatting buttons on hover and active states
-            Object.values(mobileFormatBtns).forEach(btn => {
-                if (btn) {
-                    btn.addEventListener('mousedown', function() {
-                        this.style.backgroundColor = '#e6f7ff';
-                        this.style.borderColor = '#1890ff';
-                        this.style.color = '#1890ff';
-                    });
-
-                    btn.addEventListener('mouseup', function() {
-                        this.style.backgroundColor = '#ffffff';
-                        this.style.borderColor = '#e0e0e0';
-                        this.style.color = '#333';
-                    });
-
-                    btn.addEventListener('touchstart', function() {
-                        this.style.backgroundColor = '#e6f7ff';
-                        this.style.borderColor = '#1890ff';
-                        this.style.color = '#1890ff';
-                    });
-
-                    btn.addEventListener('touchend', function() {
-                        this.style.backgroundColor = '#ffffff';
-                        this.style.borderColor = '#e0e0e0';
-                        this.style.color = '#333';
-                    });
-                }
-            });
-
-            // Add CSS to make the mobile formatting toolbar more usable
-            const style = document.createElement('style');
-            style.textContent = `
-                @media (max-width: 768px) {
-                    details.mobile-only {
-                        display: block !important;
-                        margin: 10px 0;
-                        padding: 5px;
-                        border: 1px solid #e0e0e0;
-                        border-radius: 5px;
-                        background-color: #fff;
-                    }
-                    
-                    details.mobile-only summary {
-                        padding: 8px;
-                        cursor: pointer;
-                        font-weight: bold;
-                        background-color: #f8f8f8;
-                        border-radius: 4px;
-                        list-style: none;
-                    }
-                    
-                    details.mobile-only summary::-webkit-details-marker {
-                        display: none;
-                    }
-                    
-                    details.mobile-only .format-buttons {
-                        display: flex;
-                        flex-wrap: wrap;
-                        padding: 10px 5px;
-                        gap: 8px;
-                    }
-                    
-                    details.mobile-only button {
-                        background-color: #ffffff;
-                        border: 1px solid #e0e0e0;
-                        border-radius: 4px;
-                        padding: 8px 12px;
-                        cursor: pointer;
-                        font-size: 14px;
-                        color: #333;
-                        display: inline-flex;
-                        align-items: center;
-                        justify-content: center;
-                        margin: 5px;
-                        min-width: 36px;
-                        height: 36px;
-                    }
-                    
-                    details.mobile-only button:active,
-                    details.mobile-only button.active {
-                        background-color: #e6f7ff;
-                        border-color: #1890ff;
-                        color: #1890ff;
-                    }
-                }
-            `;
-            document.head.appendChild(style);
-        });
+        }
+        
+        // Run the mobile formatting initialization
+        setTimeout(initializeMobileFormatting, 500);
     </script>
 </body>
 </html>
