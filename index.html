@@ -549,6 +549,16 @@
                             <button id="quoteBtn" title="Quote"><i class="fas fa-quote-right"></i></button>
                             <button id="codeBtn" title="Code"><i class="fas fa-code"></i></button>
                             <button id="listBtn" title="List"><i class="fas fa-list"></i></button>
+                            
+                            <!-- Additional mobile formatting options -->
+                            <button id="alignLeftBtn" title="Align Left"><i class="fas fa-align-left"></i></button>
+                            <button id="alignCenterBtn" title="Align Center"><i class="fas fa-align-center"></i></button>
+                            <button id="alignRightBtn" title="Align Right"><i class="fas fa-align-right"></i></button>
+                            <button id="linkBtn" title="Insert Link"><i class="fas fa-link"></i></button>
+                            <button id="imageBtn" title="Insert Image"><i class="fas fa-image"></i></button>
+                            <button id="hrBtn" title="Horizontal Rule"><i class="fas fa-minus"></i></button>
+                            <button id="indentBtn" title="Indent"><i class="fas fa-indent"></i></button>
+                            <button id="outdentBtn" title="Outdent"><i class="fas fa-outdent"></i></button>
                         </div>
                     </details>
                 </div>
@@ -1645,87 +1655,215 @@
             const codeBtn = document.getElementById('codeBtn');
             const listBtn = document.getElementById('listBtn');
             
+            // Additional formatting buttons
+            const alignLeftBtn = document.getElementById('alignLeftBtn');
+            const alignCenterBtn = document.getElementById('alignCenterBtn');
+            const alignRightBtn = document.getElementById('alignRightBtn');
+            const linkBtn = document.getElementById('linkBtn');
+            const imageBtn = document.getElementById('imageBtn');
+            const hrBtn = document.getElementById('hrBtn');
+            const indentBtn = document.getElementById('indentBtn');
+            const outdentBtn = document.getElementById('outdentBtn');
+            
             const noteContent = document.querySelector('.note-content');
             
             if (noteContent) {
                 // Helper function to execute formatting commands
                 function formatText(command, value = null) {
                     console.log('Formatting:', command, value);
-                    document.execCommand(command, false, value);
-                    noteContent.focus();
+                    noteContent.focus(); // Focus first to ensure command works
+                    setTimeout(() => {
+                        document.execCommand(command, false, value);
+                    }, 10);
                 }
                 
-                // Add event listeners to formatting buttons
-                if (boldBtn) boldBtn.addEventListener('click', function() { formatText('bold'); });
-                if (italicBtn) italicBtn.addEventListener('click', function() { formatText('italic'); });
-                if (underlineBtn) underlineBtn.addEventListener('click', function() { formatText('underline'); });
-                if (strikeBtn) strikeBtn.addEventListener('click', function() { formatText('strikeThrough'); });
+                // Basic formatting options - ensure they work by adding direct event handlers
+                if (boldBtn) boldBtn.addEventListener('click', function(e) { 
+                    e.preventDefault();
+                    formatText('bold'); 
+                });
+                
+                if (italicBtn) italicBtn.addEventListener('click', function(e) { 
+                    e.preventDefault();
+                    formatText('italic'); 
+                });
+                
+                if (underlineBtn) underlineBtn.addEventListener('click', function(e) { 
+                    e.preventDefault();
+                    formatText('underline'); 
+                });
+                
+                if (strikeBtn) strikeBtn.addEventListener('click', function(e) { 
+                    e.preventDefault();
+                    formatText('strikeThrough'); 
+                });
                 
                 // Handle heading insertion
                 if (headingBtn) {
-                    headingBtn.addEventListener('click', function() {
-                        const selection = window.getSelection();
-                        if (selection.rangeCount) {
-                            const range = selection.getRangeAt(0);
-                            const selectedText = range.toString();
-                            
-                            if (selectedText) {
-                                // Replace selection with heading
-                                const heading = document.createElement('h2');
-                                heading.textContent = selectedText;
-                                range.deleteContents();
-                                range.insertNode(heading);
-                            } else {
-                                // Insert new heading
-                                formatText('formatBlock', '<h2>');
-                            }
-                        } else {
-                            formatText('formatBlock', '<h2>');
-                        }
+                    headingBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        formatText('formatBlock', '<h2>');
                     });
                 }
                 
                 // Handle quote insertion
                 if (quoteBtn) {
-                    quoteBtn.addEventListener('click', function() {
+                    quoteBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
                         formatText('formatBlock', '<blockquote>');
                     });
                 }
                 
                 // Handle code insertion
                 if (codeBtn) {
-                    codeBtn.addEventListener('click', function() {
+                    codeBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
                         const selection = window.getSelection();
-                        if (selection.rangeCount) {
+                        if (selection.rangeCount > 0 && selection.toString().trim().length > 0) {
+                            // We have text selected, wrap it in code tags
                             const range = selection.getRangeAt(0);
                             const selectedText = range.toString();
                             
-                            if (selectedText) {
-                                // Replace selection with code
-                                const code = document.createElement('code');
-                                code.textContent = selectedText;
-                                range.deleteContents();
-                                range.insertNode(code);
-                            } else {
-                                // Insert new code block
-                                const code = document.createElement('pre');
-                                code.innerHTML = '<code>// Your code here</code>';
-                                range.insertNode(code);
-                            }
+                            const codeElement = document.createElement('code');
+                            codeElement.textContent = selectedText;
+                            
+                            range.deleteContents();
+                            range.insertNode(codeElement);
                         } else {
-                            const code = document.createElement('pre');
-                            code.innerHTML = '<code>// Your code here</code>';
-                            noteContent.appendChild(code);
+                            // No selection, insert a code block at the current position
+                            formatText('insertHTML', '<pre><code>// Your code here</code></pre>');
                         }
-                        noteContent.focus();
                     });
                 }
                 
                 // Handle list insertion
                 if (listBtn) {
-                    listBtn.addEventListener('click', function() {
+                    listBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
                         formatText('insertUnorderedList');
                     });
+                }
+                
+                // Additional formatting options
+                
+                // Alignment options
+                if (alignLeftBtn) {
+                    alignLeftBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        formatText('justifyLeft');
+                    });
+                }
+                
+                if (alignCenterBtn) {
+                    alignCenterBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        formatText('justifyCenter');
+                    });
+                }
+                
+                if (alignRightBtn) {
+                    alignRightBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        formatText('justifyRight');
+                    });
+                }
+                
+                // Link insertion
+                if (linkBtn) {
+                    linkBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const url = prompt('Enter the URL:');
+                        if (url) {
+                            formatText('createLink', url);
+                        }
+                    });
+                }
+                
+                // Image insertion
+                if (imageBtn) {
+                    imageBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const url = prompt('Enter the image URL:');
+                        if (url) {
+                            formatText('insertImage', url);
+                        }
+                    });
+                }
+                
+                // Horizontal rule
+                if (hrBtn) {
+                    hrBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        formatText('insertHorizontalRule');
+                    });
+                }
+                
+                // Indentation
+                if (indentBtn) {
+                    indentBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        formatText('indent');
+                    });
+                }
+                
+                if (outdentBtn) {
+                    outdentBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        formatText('outdent');
+                    });
+                }
+                
+                // Add active state tracking for buttons
+                noteContent.addEventListener('mouseup', updateActiveButtons);
+                noteContent.addEventListener('keyup', updateActiveButtons);
+                
+                function updateActiveButtons() {
+                    // Check bold state
+                    if (document.queryCommandState('bold')) {
+                        boldBtn?.classList.add('active');
+                    } else {
+                        boldBtn?.classList.remove('active');
+                    }
+                    
+                    // Check italic state
+                    if (document.queryCommandState('italic')) {
+                        italicBtn?.classList.add('active');
+                    } else {
+                        italicBtn?.classList.remove('active');
+                    }
+                    
+                    // Check underline state
+                    if (document.queryCommandState('underline')) {
+                        underlineBtn?.classList.add('active');
+                    } else {
+                        underlineBtn?.classList.remove('active');
+                    }
+                    
+                    // Check strikethrough state
+                    if (document.queryCommandState('strikeThrough')) {
+                        strikeBtn?.classList.add('active');
+                    } else {
+                        strikeBtn?.classList.remove('active');
+                    }
+                    
+                    // Check alignment states
+                    if (document.queryCommandState('justifyLeft')) {
+                        alignLeftBtn?.classList.add('active');
+                    } else {
+                        alignLeftBtn?.classList.remove('active');
+                    }
+                    
+                    if (document.queryCommandState('justifyCenter')) {
+                        alignCenterBtn?.classList.add('active');
+                    } else {
+                        alignCenterBtn?.classList.remove('active');
+                    }
+                    
+                    if (document.queryCommandState('justifyRight')) {
+                        alignRightBtn?.classList.add('active');
+                    } else {
+                        alignRightBtn?.classList.remove('active');
+                    }
                 }
                 
                 // Style the buttons to ensure they're visible
@@ -1747,10 +1885,33 @@
                     
                     const icon = button.querySelector('i');
                     if (icon) {
-                        icon.style.display = 'inline-block';
-                        icon.style.fontSize = '16px';
+                        Object.assign(icon.style, {
+                            display: 'inline-block !important',
+                            fontSize: '16px'
+                        });
                     }
+                    
+                    // Add active style
+                    button.addEventListener('click', function() {
+                        setTimeout(() => {
+                            updateActiveButtons();
+                        }, 50);
+                    });
                 });
+                
+                // Style active buttons
+                const style = document.createElement('style');
+                style.textContent = `
+                    .format-buttons button.active {
+                        background-color: #e6f7ff !important;
+                        border-color: #1a73e8 !important;
+                        color: #1a73e8 !important;
+                    }
+                    .format-buttons button.active i {
+                        color: #1a73e8 !important;
+                    }
+                `;
+                document.head.appendChild(style);
                 
                 // Ensure the format buttons container is properly styled
                 const formatButtonsContainer = document.querySelector('.format-buttons');
@@ -1760,13 +1921,25 @@
                         gridTemplateColumns: 'repeat(4, 1fr)',
                         gap: '12px',
                         padding: '16px',
-                        backgroundColor: '#f5f5f7'
+                        backgroundColor: '#f5f5f7',
+                        maxHeight: '400px',
+                        overflowY: 'auto'
                     });
                 }
             }
         }
         
-        // Run the mobile formatting initialization
+        // Ensure the .content-editable area gets focus when clicked
+        document.addEventListener('DOMContentLoaded', function() {
+            const noteContent = document.querySelector('.note-content');
+            if (noteContent) {
+                noteContent.addEventListener('click', function() {
+                    this.focus();
+                });
+            }
+        });
+        
+        // Run the mobile formatting initialization after a delay to ensure all elements are loaded
         setTimeout(initializeMobileFormatting, 500);
     </script>
 </body>
