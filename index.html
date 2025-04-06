@@ -25,7 +25,10 @@
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/fileOperations.css">
     <link rel="stylesheet" href="./css/mobile.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Fallback FontAwesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.0/css/all.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     
     <title>NotePad - Modern Note Taking App</title>
     <style>
@@ -1668,59 +1671,133 @@
             const noteContent = document.querySelector('.note-content');
             
             if (noteContent) {
-                // Helper function to execute formatting commands
-                function formatText(command, value = null) {
-                    console.log('Formatting:', command, value);
-                    noteContent.focus(); // Focus first to ensure command works
-                    setTimeout(() => {
-                        document.execCommand(command, false, value);
-                    }, 10);
+                // Fix for FontAwesome icons
+                const fixIcons = function() {
+                    // Add FontAwesome icons directly as a fallback
+                    document.querySelectorAll('.format-buttons button i').forEach(icon => {
+                        const button = icon.parentElement;
+                        if (button) {
+                            const title = button.getAttribute('title') || '';
+                            
+                            // Set direct unicode character fallbacks for FontAwesome
+                            if (title === 'Bold') icon.innerHTML = '&#xf032;'; // fa-bold
+                            if (title === 'Italic') icon.innerHTML = '&#xf033;'; // fa-italic
+                            if (title === 'Underline') icon.innerHTML = '&#xf0cd;'; // fa-underline
+                            if (title === 'Strike') icon.innerHTML = '&#xf0cc;'; // fa-strikethrough
+                            if (title === 'Heading') icon.innerHTML = '&#xf1dc;'; // fa-heading
+                            if (title === 'Quote') icon.innerHTML = '&#xf10e;'; // fa-quote-right
+                            if (title === 'Code') icon.innerHTML = '&#xf121;'; // fa-code
+                            if (title === 'List') icon.innerHTML = '&#xf0ca;'; // fa-list
+                            if (title === 'Align Left') icon.innerHTML = '&#xf036;'; // fa-align-left
+                            if (title === 'Align Center') icon.innerHTML = '&#xf037;'; // fa-align-center
+                            if (title === 'Align Right') icon.innerHTML = '&#xf038;'; // fa-align-right
+                            if (title === 'Insert Link') icon.innerHTML = '&#xf0c1;'; // fa-link
+                            if (title === 'Insert Image') icon.innerHTML = '&#xf03e;'; // fa-image
+                            if (title === 'Horizontal Rule') icon.innerHTML = '&#xf068;'; // fa-minus
+                            if (title === 'Indent') icon.innerHTML = '&#xf03c;'; // fa-indent
+                            if (title === 'Outdent') icon.innerHTML = '&#xf03b;'; // fa-outdent
+                            
+                            icon.style.fontFamily = '"Font Awesome 6 Free", "Font Awesome 5 Free", FontAwesome';
+                            icon.style.fontWeight = '900';
+                            icon.style.display = 'inline-block';
+                            icon.style.fontSize = '16px';
+                        }
+                    });
+                };
+                
+                // Run the icon fix
+                setTimeout(fixIcons, 300);
+                
+                // Direct simpler implementation of formatting commands
+                const directFormat = function(command, value = null) {
+                    try {
+                        console.log(`Applying format: ${command} ${value || ''}`);
+                        noteContent.focus();
+                        
+                        // Force selection if none exists
+                        if (window.getSelection().rangeCount === 0) {
+                            const range = document.createRange();
+                            range.setStart(noteContent, 0);
+                            range.setEnd(noteContent, 0);
+                            const sel = window.getSelection();
+                            sel.removeAllRanges();
+                            sel.addRange(range);
+                        }
+                        
+                        // Execute with a small delay
+                        setTimeout(() => {
+                            if (command === 'bold') document.execCommand('bold', false, null);
+                            else if (command === 'italic') document.execCommand('italic', false, null);
+                            else if (command === 'underline') document.execCommand('underline', false, null);
+                            else if (command === 'strikeThrough') document.execCommand('strikeThrough', false, null);
+                            else document.execCommand(command, false, value);
+                        }, 10);
+                    } catch (e) {
+                        console.error('Format error:', e);
+                    }
+                };
+                
+                // Basic formatting options with direct implementation
+                if (boldBtn) {
+                    boldBtn.style.fontWeight = 'bold';
+                    boldBtn.addEventListener('mousedown', function(e) {
+                        e.preventDefault();
+                        directFormat('bold');
+                        return false;
+                    });
                 }
                 
-                // Basic formatting options - ensure they work by adding direct event handlers
-                if (boldBtn) boldBtn.addEventListener('click', function(e) { 
-                    e.preventDefault();
-                    formatText('bold'); 
-                });
+                if (italicBtn) {
+                    italicBtn.style.fontStyle = 'italic';
+                    italicBtn.addEventListener('mousedown', function(e) {
+                        e.preventDefault();
+                        directFormat('italic');
+                        return false;
+                    });
+                }
                 
-                if (italicBtn) italicBtn.addEventListener('click', function(e) { 
-                    e.preventDefault();
-                    formatText('italic'); 
-                });
+                if (underlineBtn) {
+                    underlineBtn.style.textDecoration = 'underline';
+                    underlineBtn.addEventListener('mousedown', function(e) {
+                        e.preventDefault();
+                        directFormat('underline');
+                        return false;
+                    });
+                }
                 
-                if (underlineBtn) underlineBtn.addEventListener('click', function(e) { 
-                    e.preventDefault();
-                    formatText('underline'); 
-                });
-                
-                if (strikeBtn) strikeBtn.addEventListener('click', function(e) { 
-                    e.preventDefault();
-                    formatText('strikeThrough'); 
-                });
+                if (strikeBtn) {
+                    strikeBtn.style.textDecoration = 'line-through';
+                    strikeBtn.addEventListener('mousedown', function(e) {
+                        e.preventDefault();
+                        directFormat('strikeThrough');
+                        return false;
+                    });
+                }
                 
                 // Handle heading insertion
                 if (headingBtn) {
-                    headingBtn.addEventListener('click', function(e) {
+                    headingBtn.addEventListener('mousedown', function(e) {
                         e.preventDefault();
-                        formatText('formatBlock', '<h2>');
+                        directFormat('formatBlock', '<h2>');
+                        return false;
                     });
                 }
                 
                 // Handle quote insertion
                 if (quoteBtn) {
-                    quoteBtn.addEventListener('click', function(e) {
+                    quoteBtn.addEventListener('mousedown', function(e) {
                         e.preventDefault();
-                        formatText('formatBlock', '<blockquote>');
+                        directFormat('formatBlock', '<blockquote>');
+                        return false;
                     });
                 }
                 
                 // Handle code insertion
                 if (codeBtn) {
-                    codeBtn.addEventListener('click', function(e) {
+                    codeBtn.addEventListener('mousedown', function(e) {
                         e.preventDefault();
                         const selection = window.getSelection();
                         if (selection.rangeCount > 0 && selection.toString().trim().length > 0) {
-                            // We have text selected, wrap it in code tags
                             const range = selection.getRangeAt(0);
                             const selectedText = range.toString();
                             
@@ -1730,86 +1807,95 @@
                             range.deleteContents();
                             range.insertNode(codeElement);
                         } else {
-                            // No selection, insert a code block at the current position
-                            formatText('insertHTML', '<pre><code>// Your code here</code></pre>');
+                            directFormat('insertHTML', '<pre><code>// Your code here</code></pre>');
                         }
+                        return false;
                     });
                 }
                 
                 // Handle list insertion
                 if (listBtn) {
-                    listBtn.addEventListener('click', function(e) {
+                    listBtn.addEventListener('mousedown', function(e) {
                         e.preventDefault();
-                        formatText('insertUnorderedList');
+                        directFormat('insertUnorderedList');
+                        return false;
                     });
                 }
                 
-                // Additional formatting options
+                // Additional formatting options with mousedown instead of click
                 
                 // Alignment options
                 if (alignLeftBtn) {
-                    alignLeftBtn.addEventListener('click', function(e) {
+                    alignLeftBtn.addEventListener('mousedown', function(e) {
                         e.preventDefault();
-                        formatText('justifyLeft');
+                        directFormat('justifyLeft');
+                        return false;
                     });
                 }
                 
                 if (alignCenterBtn) {
-                    alignCenterBtn.addEventListener('click', function(e) {
+                    alignCenterBtn.addEventListener('mousedown', function(e) {
                         e.preventDefault();
-                        formatText('justifyCenter');
+                        directFormat('justifyCenter');
+                        return false;
                     });
                 }
                 
                 if (alignRightBtn) {
-                    alignRightBtn.addEventListener('click', function(e) {
+                    alignRightBtn.addEventListener('mousedown', function(e) {
                         e.preventDefault();
-                        formatText('justifyRight');
+                        directFormat('justifyRight');
+                        return false;
                     });
                 }
                 
                 // Link insertion
                 if (linkBtn) {
-                    linkBtn.addEventListener('click', function(e) {
+                    linkBtn.addEventListener('mousedown', function(e) {
                         e.preventDefault();
                         const url = prompt('Enter the URL:');
                         if (url) {
-                            formatText('createLink', url);
+                            directFormat('createLink', url);
                         }
+                        return false;
                     });
                 }
                 
                 // Image insertion
                 if (imageBtn) {
-                    imageBtn.addEventListener('click', function(e) {
+                    imageBtn.addEventListener('mousedown', function(e) {
                         e.preventDefault();
                         const url = prompt('Enter the image URL:');
                         if (url) {
-                            formatText('insertImage', url);
+                            directFormat('insertImage', url);
                         }
+                        return false;
                     });
                 }
                 
                 // Horizontal rule
                 if (hrBtn) {
-                    hrBtn.addEventListener('click', function(e) {
+                    hrBtn.addEventListener('mousedown', function(e) {
                         e.preventDefault();
-                        formatText('insertHorizontalRule');
+                        directFormat('insertHorizontalRule');
+                        return false;
                     });
                 }
                 
                 // Indentation
                 if (indentBtn) {
-                    indentBtn.addEventListener('click', function(e) {
+                    indentBtn.addEventListener('mousedown', function(e) {
                         e.preventDefault();
-                        formatText('indent');
+                        directFormat('indent');
+                        return false;
                     });
                 }
                 
                 if (outdentBtn) {
-                    outdentBtn.addEventListener('click', function(e) {
+                    outdentBtn.addEventListener('mousedown', function(e) {
                         e.preventDefault();
-                        formatText('outdent');
+                        directFormat('outdent');
+                        return false;
                     });
                 }
                 
@@ -1872,30 +1958,52 @@
                     Object.assign(button.style, {
                         width: '100%',
                         height: '44px',
-                        borderRadius: '10px',
+                        borderRadius: '8px',
                         backgroundColor: 'white',
-                        border: '1px solid #e0e0e5',
+                        border: '1px solid #ddd',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         color: '#333',
                         fontSize: '18px',
-                        boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)'
+                        boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
+                        transition: 'background-color 0.2s ease, transform 0.1s ease'
+                    });
+                    
+                    // Add press effect
+                    button.addEventListener('mousedown', function() {
+                        this.style.transform = 'scale(0.98)';
+                        this.style.backgroundColor = '#f0f0f0';
+                    });
+                    
+                    button.addEventListener('mouseup', function() {
+                        this.style.transform = 'scale(1)';
+                        this.style.backgroundColor = 'white';
+                    });
+                    
+                    button.addEventListener('mouseleave', function() {
+                        this.style.transform = 'scale(1)';
+                        this.style.backgroundColor = 'white';
                     });
                     
                     const icon = button.querySelector('i');
                     if (icon) {
                         Object.assign(icon.style, {
                             display: 'inline-block !important',
-                            fontSize: '16px'
+                            fontSize: '16px',
+                            margin: '0 auto'
                         });
                     }
-                    
-                    // Add active style
-                    button.addEventListener('click', function() {
-                        setTimeout(() => {
-                            updateActiveButtons();
-                        }, 50);
+                });
+                
+                // Fix the moving page issue by preventing default behaviors
+                document.querySelectorAll('.editor-toolbar details summary').forEach(summary => {
+                    summary.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const details = this.parentElement;
+                        if (details) {
+                            details.open = !details.open;
+                        }
                     });
                 });
                 
@@ -1910,6 +2018,16 @@
                     .format-buttons button.active i {
                         color: #1a73e8 !important;
                     }
+                    .editor-toolbar details[open] .format-buttons {
+                        animation: none !important;
+                    }
+                    /* Stop potential animations causing page jerking */
+                    @media (max-width: 768px) {
+                        * {
+                            transition: none !important;
+                            animation: none !important;
+                        }
+                    }
                 `;
                 document.head.appendChild(style);
                 
@@ -1922,8 +2040,9 @@
                         gap: '12px',
                         padding: '16px',
                         backgroundColor: '#f5f5f7',
-                        maxHeight: '400px',
-                        overflowY: 'auto'
+                        overflow: 'visible',
+                        position: 'relative',
+                        zIndex: '50'
                     });
                 }
             }
