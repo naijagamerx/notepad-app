@@ -1,0 +1,41 @@
+{
+  "codebase": {
+    "rules": {
+      "enabled": true,
+      "language": {
+        "javascript": true,
+        "html": true,
+        "css": true
+      }
+    },
+    "ai_assistant": {
+      "enabled": true,
+      "suggestions": true,
+      "auto_complete": true
+    },
+    "linting": {
+      "enabled": true,
+      "auto_fix": true
+    },
+    "formatting": {
+      "enabled": true,
+      "on_save": true
+    },
+    "environment": {
+      "dev": true,
+      "test": false,
+      "prod": false
+    }
+  },
+  "editor": {
+    "code_style": {
+      "indent_size": 2,
+      "indent_style": "space",
+      "max_line_length": 100
+    },
+    "file_handling": {
+      "auto_save": true,
+      "auto_format": true
+    }
+  }
+} 

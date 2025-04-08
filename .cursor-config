@@ -1,0 +1,39 @@
+# Cursor IDE Configuration
+
+# Enable cursor rules
+enabled = true
+
+# Editor settings
+[editor]
+autosave = true
+format_on_save = true
+tab_size = 2
+indent_style = space
+max_line_length = 100
+
+# Language-specific settings
+[languages.javascript]
+enabled = true
+linting = true
+
+[languages.html]
+enabled = true
+linting = true
+
+[languages.css]
+enabled = true
+linting = true
+
+# Codebase settings
+[codebase]
+environment_aware = true
+test_folder = "test"
+dynamic_links = true
+avoid_duplication = true
+
+# Rules settings
+[rules]
+linting = true
+formatting = true
+suggestions = true
+autofix = true 

@@ -1,54 +1,6 @@
-# NotePad - Modern Note Taking App
+# NotePad - Modern Note-Taking Application
 
-A modern web-based note-taking application with a clean, intuitive interface and powerful features.
-
-## Live Preview
-Check out the live version at [notepadsly.com](https://notepadsly.com)
-
-## Features
-
-- **Rich Text Editing**: Format your notes with bold, italic, underline, and more
-- **Folder Organization**: Create and manage folders to organize your notes
-- **Search Functionality**: Quickly find notes with the search feature
-- **Mobile Responsive**: Works seamlessly on both desktop and mobile devices
-- **Tagging System**: Add tags to your notes for better organization
-- **File Upload**: Upload text files directly into your notes
-- **Share Notes**: Share your notes with others
-- **About Modal**: Learn more about Notepadsly with the new About modal
-- **Mobile Optimizations**: Improved mobile experience with floating action buttons and responsive design
-
-## Latest Updates
-
-- Added About modal with social media links (GitHub, Instagram, Threads)
-- Improved mobile view with floating action buttons for sharing and tagging
-- Enhanced mobile toolbar with context-aware buttons
-- Updated icon styling and colors for better visual feedback
-- Fixed mobile-specific UI issues and improved responsiveness
-
-## Installation
-
-1. Clone the repository
-2. Open `index.html` in your browser
-3. Start taking notes!
-
-## Technologies Used
-
-- HTML5
-- CSS3
-- JavaScript
-- Font Awesome Icons
-- Local Storage API
-
-## Browser Support
-
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+A beautiful and functional web-based note-taking application built with vanilla JavaScript, HTML5, and CSS3. NotePad provides an intuitive and responsive interface for managing your notes, with features like rich text editing, note sharing, and tagging.
 
 ## 📝 Main Interface
 ![Main Interface](https://raw.githubusercontent.com/naijagamerx/notepad-app/main/documentation/assets/images/features/main-index-interface-with%20example.png)

@@ -37,18 +37,4 @@ read.md
 # Temporary files
 *.log
 *.tmp
-.temp/
-
-# Exclude Markdown files
-*.md
-!README.md
-
-# Exclude system files
-.DS_Store
-Thumbs.db
-
-# Exclude editor files
-.vscode/
-.idea/
-*.swp
-*.swo 
+.temp/ 

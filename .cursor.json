@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "rules": {
+    "enabled": true,
+    "linting": true,
+    "formatting": true,
+    "suggestions": true,
+    "autofix": true
+  },
+  "editor": {
+    "autoSave": true,
+    "formatOnSave": true,
+    "tabSize": 2,
+    "indentStyle": "space",
+    "maxLineLength": 100
+  },
+  "languages": {
+    "javascript": {
+      "enabled": true,
+      "linting": true
+    },
+    "html": {
+      "enabled": true,
+      "linting": true
+    },
+    "css": {
+      "enabled": true,
+      "linting": true
+    }
+  },
+  "codebase": {
+    "environmentAware": true,
+    "testFolder": "test",
+    "dynamicLinks": true,
+    "avoidDuplication": true
+  }
+} 

@@ -1,0 +1,56 @@
+{
+    "name": "NotePad",
+    "short_name": "NotePad",
+    "description": "A modern note-taking application",
+    "start_url": "./",
+    "display": "standalone",
+    "background_color": "#f9f9f9",
+    "theme_color": "#f9f9f9",
+    "orientation": "any",
+    "icons": [
+        {
+            "src": "./images/icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "./images/icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "images/screenshot1.jpg",
+            "sizes": "1280x720",
+            "type": "image/jpeg",
+            "platform": "wide",
+            "label": "Notes application with sidebar and editor"
+        },
+        {
+            "src": "images/screenshot2.jpg",
+            "sizes": "1280x720",
+            "type": "image/jpeg",
+            "platform": "narrow",
+            "label": "Mobile view of the NotePad app"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "New Note",
+            "short_name": "New",
+            "url": "index.html?action=new",
+            "icons": [{ "src": "images/new-note.png", "sizes": "96x96" }]
+        },
+        {
+            "name": "All Notes",
+            "short_name": "All",
+            "url": "index.html?action=all",
+            "icons": [{ "src": "images/all-notes.png", "sizes": "96x96" }]
+        }
+    ],
+    "categories": ["productivity", "utilities"],
+    "prefer_related_applications": false
+} 

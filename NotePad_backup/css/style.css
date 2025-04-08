@@ -1,0 +1,643 @@
+/* Modal Styles - Updated for better sizing and delete modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #333;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    padding: 0;
+    line-height: 1;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.primary-btn, .secondary-btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.primary-btn {
+    background-color: #007AFF;
+    color: white;
+}
+
+.secondary-btn {
+    background-color: #E4E4E4;
+    color: #333;
+}
+
+.primary-btn:hover {
+    background-color: #0056b3;
+}
+
+.secondary-btn:hover {
+    background-color: #d4d4d4;
+}
+
+/* Modal animation */
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Prevent body scroll when modal is open */
+body.modal-open {
+    overflow: hidden;
+}
+
+/* Toolbar Styles */
+.toolbar {
+    padding: 8px 12px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f8f9fa;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    flex-wrap: wrap;
+}
+
+.toolbar-left, .toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.toolbar-left {
+    flex: 1;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: thin;
+    padding-bottom: 2px;
+}
+
+.toolbar-left::-webkit-scrollbar {
+    height: 4px;
+}
+
+.toolbar-left::-webkit-scrollbar-thumb {
+    background-color: #ddd;
+    border-radius: 2px;
+}
+
+.toolbar-left::-webkit-scrollbar-track {
+    background-color: #f5f5f5;
+}
+
+#saveNoteBtn, #deleteNoteBtn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+#saveNoteBtn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+}
+
+#saveNoteBtn:hover {
+    background-color: #43a047;
+}
+
+#deleteNoteBtn {
+    background-color: #fff;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+}
+
+#deleteNoteBtn:hover {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+#sidebarToggle {
+    margin-right: 4px;
+}
+
+#uploadBtn {
+    padding: 6px 8px;
+}
+
+#uploadTextBtn {
+    background-color: #f8f9fa;
+    border-color: #dee2e6;
+    padding: 6px 12px;
+}
+
+#uploadTextBtn:hover {
+    background-color: #e9ecef;
+    border-color: #ced4da;
+}
+
+#uploadTextBtn span {
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+
+/* Add these styles for the All Notes link */
+.all-notes-link {
+    border-bottom: 1px solid #eee;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+}
+
+.all-notes-link i {
+    color: #007AFF;
+}
+
+.all-notes-link:hover {
+    background-color: #f5f5f5;
+}
+
+.all-notes-link.selected {
+    background-color: #e3f2fd;
+}
+
+.folder-item {
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.folder-item i {
+    width: 20px;
+    text-align: center;
+}
+
+.folder-item .note-count {
+    margin-left: auto;
+    background-color: #e0e0e0;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 0.8em;
+    color: #666;
+}
+
+/* Note List Styles - Updated with rounded borders and green active state */
+.note-item {
+    padding: 8px 12px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    max-height: 85px;
+    overflow: hidden;
+    margin: 2px 8px;
+    border-radius: 8px;
+}
+
+.note-item:hover {
+    background-color: #f5f5f5;
+}
+
+.note-item.selected {
+    background-color: #f0f9f0;
+    border: 1px solid #4CAF50;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.note-item .note-title {
+    font-weight: 500;
+    font-size: 0.9em;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 2px;
+    line-height: 1.2;
+}
+
+.note-item .note-folder {
+    font-size: 0.75em;
+    color: #666;
+    margin: 2px 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.note-item .note-preview {
+    font-size: 0.8em;
+    color: #666;
+    margin: 2px 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    line-height: 1.3;
+}
+
+.note-item .note-date {
+    font-size: 0.75em;
+    color: #888;
+    margin-top: 2px;
+    font-style: italic;
+}
+
+/* Add these styles for the note content title */
+.note-content h1 {
+    font-size: 24px;
+    color: #333;
+    margin: 0 0 20px 0;
+    padding: 0 0 10px 0;
+    font-weight: 600;
+    border-bottom: 1px solid #eee;
+    line-height: 1.3;
+}
+
+.note-content h1:focus {
+    outline: none;
+    border-bottom-color: #4CAF50;
+}
+
+/* Style for the title input in toolbar */
+#noteTitleInput {
+    width: 100%;
+    padding: 15px 20px;
+    font-size: 24px;
+    border: none;
+    border-bottom: 1px solid #e0e0e0;
+    background: #fff;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #333;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+#noteTitleInput:focus {
+    outline: none;
+    border-bottom-color: #007AFF;
+    background: #f8f9fa;
+}
+
+.note-content {
+    padding: 20px;
+    line-height: 1.6;
+}
+
+/* Delete Modal Specific Styles */
+#deleteConfirmModal .modal-content {
+    max-width: 350px;
+}
+
+#deleteConfirmModal .modal-header {
+    color: #dc3545;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ffebee;
+}
+
+#deleteConfirmModal .warning-icon {
+    color: #dc3545;
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+#deleteConfirmModal .modal-body {
+    padding: 20px 0;
+}
+
+#deleteConfirmModal .note-title {
+    color: #dc3545;
+    font-weight: 500;
+    margin-top: 8px;
+    font-size: 0.95em;
+}
+
+#deleteConfirmModal .btn-danger {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#deleteConfirmModal .btn-danger:hover {
+    background-color: #c82333;
+}
+
+#deleteConfirmModal .btn-secondary {
+    background-color: #e9ecef;
+    color: #495057;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#deleteConfirmModal .btn-secondary:hover {
+    background-color: #dde2e6;
+}
+
+/* Folder Modal Specific Styles */
+#folderModal .modal-content {
+    max-width: 350px;
+}
+
+#folderModal .modal-header {
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+#folderModal .input-group {
+    margin: 15px 0;
+}
+
+#folderModal .input-group input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+#folderModal .input-group input:focus {
+    border-color: #007AFF;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.1);
+}
+
+#folderModal .modal-footer {
+    padding-top: 15px;
+    border-top: 1px solid #e9ecef;
+}
+
+/* Modal Buttons */
+.modal .btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.editor-toolbar {
+    padding: 0;
+    background: transparent;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.editor-toolbar details {
+    width: 100%;
+    margin: 8px 0 15px 0;
+    border-radius: 10px;
+    background: #f5f5f7;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.editor-toolbar summary {
+    padding: 12px 16px;
+    font-weight: 500;
+    font-size: 15px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+    user-select: none;
+    cursor: pointer;
+    outline: none;
+}
+
+.editor-toolbar summary::-webkit-details-marker {
+    display: none;
+}
+
+.editor-toolbar summary::after {
+    content: '\f107';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    font-size: 14px;
+    color: #8e8e93;
+    transition: transform 0.2s ease;
+}
+
+.editor-toolbar details[open] summary::after {
+    transform: rotate(180deg);
+}
+
+.format-buttons {
+    padding: 16px;
+    background: #f5f5f7;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-start;
+}
+
+.format-buttons button {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background-color: #fff;
+    border: 1px solid #e0e0e5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    font-size: 16px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.format-buttons button:hover {
+    background-color: #f1f1f3;
+}
+
+.format-buttons button:active {
+    transform: scale(0.95);
+    background-color: #e9e9eb;
+}
+
+/* PC-only formatting buttons */
+.format-buttons button.pc-only {
+    display: flex;
+}
+
+/* Highlight active formatting */
+.format-buttons button.active {
+    background-color: #e6f7ff;
+    border-color: #1a73e8;
+    color: #1a73e8;
+}
+
+/* Add separator between basic and advanced formatting options */
+.format-buttons button:nth-child(8) {
+    margin-right: 20px;
+    position: relative;
+}
+
+.format-buttons button:nth-child(8)::after {
+    content: '';
+    position: absolute;
+    right: -15px;
+    top: 5px;
+    bottom: 5px;
+    width: 1px;
+    background-color: #e0e0e5;
+}
+
+/* Custom styling for specific buttons */
+#linkBtn, #imageBtn {
+    color: #007AFF;
+}
+
+#hrBtn {
+    color: #666;
+}
+
+/* PC-only formatting toolbar */
+.format-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: 15px;
+    padding: 0 10px;
+    border-left: 1px solid #e0e0e0;
+    overflow-x: visible;
+}
+
+.format-toolbar button {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    background-color: transparent;
+    border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #555;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.format-toolbar button:hover {
+    background-color: #f1f1f3;
+    border-color: #e0e0e5;
+}
+
+.format-toolbar button.active {
+    background-color: #e6f7ff;
+    border-color: #1a73e8;
+    color: #1a73e8;
+}
+
+.format-divider {
+    width: 1px;
+    height: 24px;
+    background-color: #e0e0e0;
+    margin: 0 4px;
+}
+
+#toolbar-linkBtn, #toolbar-imageBtn {
+    color: #007AFF;
+}
+
+#toolbar-hrBtn {
+    color: #666;
+}
+
+/* Mobile-only formatting buttons */
+.mobile-only {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .format-buttons button.pc-only {
+        display: none;
+    }
+    
+    .format-buttons button:nth-child(8)::after {
+        display: none;
+    }
+}
