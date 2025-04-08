@@ -5,6 +5,9 @@
  * @license MIT
  */
 
+// Initialize namespace if not already done
+window.notepadsly = window.notepadsly || {};
+
 /**
  * Represents a single note in the application
  * @class
@@ -128,72 +131,82 @@ class NotesApp {
     }
 
     attachEventListeners() {
-        // Sidebar toggle
-        this.sidebarToggle.addEventListener('click', () => {
-            this.sidebar.classList.toggle('collapsed');
-        });
-
-        // Search functionality
-        if (this.searchInput) {
-            this.searchInput.addEventListener('input', () => {
-                this.searchNotes(this.searchInput.value);
+        // Check if format handlers have been initialized
+        if (window.notepadsly.isFormatHandlersInitialized) {
+            console.log('Format handlers already initialized. Skipping format button setup...');
+        } else {
+            // Set the initialization flag
+            window.notepadsly.isFormatHandlersInitialized = true;
+            console.log('Initializing format handlers from script.js...');
+            
+            // Sidebar toggle
+            this.sidebarToggle.addEventListener('click', () => {
+                this.sidebar.classList.toggle('collapsed');
             });
+    
+            // Search functionality
+            if (this.searchInput) {
+                this.searchInput.addEventListener('input', () => {
+                    this.searchNotes(this.searchInput.value);
+                });
+            }
+    
+            // Note content changes
+            this.noteTitle.addEventListener('input', () => {
+                if (this.currentNote) {
+                    this.currentNote.title = this.noteTitle.value;
+                    this.updateSaveButton();
+                }
+            });
+    
+            this.noteContent.addEventListener('input', () => {
+                if (this.currentNote) {
+                    this.currentNote.content = this.noteContent.innerHTML;
+                    this.updateSaveButton();
+                }
+            });
+    
+            // New note button
+            document.getElementById('newNoteBtn').addEventListener('click', () => {
+                this.createNewNote();
+            });
+    
+            // Add event listeners with bound methods directly
+            if (this.boldBtn) this.boldBtn.addEventListener('click', () => this.formatText('bold'));
+            if (this.italicBtn) this.italicBtn.addEventListener('click', () => this.formatText('italic'));
+            if (this.underlineBtn) this.underlineBtn.addEventListener('click', () => this.formatText('underline'));
+            if (this.strikeBtn) this.strikeBtn.addEventListener('click', () => this.formatText('strikeThrough'));
+            if (this.headingBtn) this.headingBtn.addEventListener('click', this.insertHeading);
+            if (this.quoteBtn) this.quoteBtn.addEventListener('click', this.insertQuote);
+            if (this.codeBtn) this.codeBtn.addEventListener('click', this.insertCode);
+            if (this.listBtn) this.listBtn.addEventListener('click', () => this.formatText('insertUnorderedList'));
+            
+            // PC-only formatting button listeners
+            if (this.toolbarBoldBtn) this.toolbarBoldBtn.addEventListener('click', () => this.formatText('bold'));
+            if (this.toolbarItalicBtn) this.toolbarItalicBtn.addEventListener('click', () => this.formatText('italic'));
+            if (this.toolbarUnderlineBtn) this.toolbarUnderlineBtn.addEventListener('click', () => this.formatText('underline'));
+            if (this.toolbarStrikeBtn) this.toolbarStrikeBtn.addEventListener('click', () => this.formatText('strikeThrough'));
+            if (this.toolbarHeadingBtn) this.toolbarHeadingBtn.addEventListener('click', this.insertHeading);
+            if (this.toolbarQuoteBtn) this.toolbarQuoteBtn.addEventListener('click', this.insertQuote);
+            if (this.toolbarCodeBtn) this.toolbarCodeBtn.addEventListener('click', this.insertCode);
+            if (this.toolbarListBtn) this.toolbarListBtn.addEventListener('click', () => this.formatText('insertUnorderedList'));
+            if (this.toolbarAlignLeftBtn) this.toolbarAlignLeftBtn.addEventListener('click', this.alignLeft);
+            if (this.toolbarAlignCenterBtn) this.toolbarAlignCenterBtn.addEventListener('click', this.alignCenter);
+            if (this.toolbarAlignRightBtn) this.toolbarAlignRightBtn.addEventListener('click', this.alignRight);
+            if (this.toolbarIndentBtn) this.toolbarIndentBtn.addEventListener('click', this.indent);
+            if (this.toolbarOutdentBtn) this.toolbarOutdentBtn.addEventListener('click', this.outdent);
+            if (this.toolbarLinkBtn) this.toolbarLinkBtn.addEventListener('click', this.insertLink);
+            if (this.toolbarImageBtn) this.toolbarImageBtn.addEventListener('click', this.insertImage);
+            if (this.toolbarHrBtn) this.toolbarHrBtn.addEventListener('click', this.insertHorizontalRule);
+            
+            // Add listener to track active formatting and show as active buttons
+            if (this.noteContent) {
+                this.noteContent.addEventListener('keyup', this.updateActiveButtons.bind(this));
+                this.noteContent.addEventListener('mouseup', this.updateActiveButtons.bind(this));
+            }
         }
 
-        // Note content changes
-        this.noteTitle.addEventListener('input', () => {
-            if (this.currentNote) {
-                this.currentNote.title = this.noteTitle.value;
-                this.updateSaveButton();
-            }
-        });
-
-        this.noteContent.addEventListener('input', () => {
-            if (this.currentNote) {
-                this.currentNote.content = this.noteContent.innerHTML;
-                this.updateSaveButton();
-            }
-        });
-
-        // New note button
-        document.getElementById('newNoteBtn').addEventListener('click', () => {
-            this.createNewNote();
-        });
-
-        // Add event listeners with bound methods directly
-        if (this.boldBtn) this.boldBtn.addEventListener('click', () => this.formatText('bold'));
-        if (this.italicBtn) this.italicBtn.addEventListener('click', () => this.formatText('italic'));
-        if (this.underlineBtn) this.underlineBtn.addEventListener('click', () => this.formatText('underline'));
-        if (this.strikeBtn) this.strikeBtn.addEventListener('click', () => this.formatText('strikeThrough'));
-        if (this.headingBtn) this.headingBtn.addEventListener('click', this.insertHeading);
-        if (this.quoteBtn) this.quoteBtn.addEventListener('click', this.insertQuote);
-        if (this.codeBtn) this.codeBtn.addEventListener('click', this.insertCode);
-        if (this.listBtn) this.listBtn.addEventListener('click', () => this.formatText('insertUnorderedList'));
-        
-        // PC-only formatting button listeners
-        if (this.toolbarBoldBtn) this.toolbarBoldBtn.addEventListener('click', () => this.formatText('bold'));
-        if (this.toolbarItalicBtn) this.toolbarItalicBtn.addEventListener('click', () => this.formatText('italic'));
-        if (this.toolbarUnderlineBtn) this.toolbarUnderlineBtn.addEventListener('click', () => this.formatText('underline'));
-        if (this.toolbarStrikeBtn) this.toolbarStrikeBtn.addEventListener('click', () => this.formatText('strikeThrough'));
-        if (this.toolbarHeadingBtn) this.toolbarHeadingBtn.addEventListener('click', this.insertHeading);
-        if (this.toolbarQuoteBtn) this.toolbarQuoteBtn.addEventListener('click', this.insertQuote);
-        if (this.toolbarCodeBtn) this.toolbarCodeBtn.addEventListener('click', this.insertCode);
-        if (this.toolbarListBtn) this.toolbarListBtn.addEventListener('click', () => this.formatText('insertUnorderedList'));
-        if (this.toolbarAlignLeftBtn) this.toolbarAlignLeftBtn.addEventListener('click', this.alignLeft);
-        if (this.toolbarAlignCenterBtn) this.toolbarAlignCenterBtn.addEventListener('click', this.alignCenter);
-        if (this.toolbarAlignRightBtn) this.toolbarAlignRightBtn.addEventListener('click', this.alignRight);
-        if (this.toolbarIndentBtn) this.toolbarIndentBtn.addEventListener('click', this.indent);
-        if (this.toolbarOutdentBtn) this.toolbarOutdentBtn.addEventListener('click', this.outdent);
-        if (this.toolbarLinkBtn) this.toolbarLinkBtn.addEventListener('click', this.insertLink);
-        if (this.toolbarImageBtn) this.toolbarImageBtn.addEventListener('click', this.insertImage);
-        if (this.toolbarHrBtn) this.toolbarHrBtn.addEventListener('click', this.insertHorizontalRule);
-        
-        // Add listener to track active formatting and show as active buttons
-        if (this.noteContent) {
-            this.noteContent.addEventListener('keyup', this.updateActiveButtons.bind(this));
-            this.noteContent.addEventListener('mouseup', this.updateActiveButtons.bind(this));
-        }
-
+        // These listeners should always be attached regardless of format handler initialization
         // Save and delete buttons
         if (this.saveNoteBtn) this.saveNoteBtn.addEventListener('click', () => this.saveCurrentNote());
         if (this.deleteNoteBtn) this.deleteNoteBtn.addEventListener('click', () => this.deleteCurrentNote());

@@ -21,10 +21,10 @@
     <link rel="manifest" href="manifest.json">
     
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/fileOperations.css">
     <link rel="stylesheet" href="css/mobile.css">
+    <link rel="stylesheet" href="styles.css?v=1.1" id="main-stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <title>NotePad - Modern Note Taking App</title>
     <style>
@@ -47,6 +47,28 @@
             
             .sidebar.collapsed {
                 transform: translateX(-100%) !important;
+            }
+            
+            /* Explicitly hide PC formatting toolbar on mobile */
+            .format-toolbar.pc-only {
+                display: none !important;
+            }
+            
+            /* Explicitly show mobile formatting options on mobile */
+            .mobile-only {
+                display: block !important;
+            }
+        }
+        
+        /* Explicitly hide mobile-only elements on desktop */
+        @media (min-width: 769px) {
+            .mobile-only {
+                display: none !important;
+            }
+            
+            /* Explicitly show PC formatting toolbar on desktop */
+            .format-toolbar.pc-only {
+                display: flex !important;
             }
         }
     </style>
@@ -313,12 +335,14 @@
 
     <!-- About Modal -->
     <div id="aboutModal" class="modal about-modal">
-        <div class="modal-content about-modal-content">
-            <button id="closeAboutBtn" class="close-btn about-close-btn">&times;</button>
-            <img src="images/icon-192x192.png" alt="Notepadsly Logo" class="about-logo">
-            <h2>Notepadsly</h2>
-            <p class="version">Version 1.0</p>
-            <p class="slogan">"Your idea , Anywhere"</p>
+        <div class="about-modal-content">
+            <button id="closeAboutBtn" class="close-btn">&times;</button>
+            <div class="logo">
+                <img src="images/icon-192x192.png" alt="Notepadsly Logo">
+            </div>
+            <h1>Notepadsly</h1>
+            <span class="version">v1.0</span>
+            <h2>Your idea, Anywhere.</h2>
             <div class="social-links">
                 <a href="https://github.com/naijagamerx/notepad-app" target="_blank" title="GitHub">
                     <i class="fab fa-github"></i>
@@ -405,6 +429,34 @@
                 }
             });
         }
+    </script>
+    
+    <!-- Script Initialization Guard to Prevent Duplicate Handlers -->
+    <script>
+        // Global namespace to track initialization status
+        window.notepadsly = window.notepadsly || {};
+        
+        // Check if formatting handlers are already initialized
+        window.notepadsly.isFormatHandlersInitialized = false;
+        
+        // Prevent duplicate event listeners for formatting buttons
+        function initFormatHandlers() {
+            if (window.notepadsly.isFormatHandlersInitialized) {
+                console.log('Format handlers already initialized. Skipping...');
+                return;
+            }
+            
+            console.log('Initializing format handlers...');
+            window.notepadsly.isFormatHandlersInitialized = true;
+        }
+        
+        // Call this function before attaching event listeners in any JS file
+        document.addEventListener('DOMContentLoaded', initFormatHandlers);
+    </script>
+    
+    <script>
+        // Code for mobile tab bar
+        // ... existing code ...
     </script>
 </body>
 </html>
